@@ -86,7 +86,7 @@ func TestSubVectorFromZero(t *testing.T) {
 	v3 := Sub(v1, v2)
 
 	assert.InDelta(t, -1.0, v3.X, float64EqualityThreshold)
-	assert.InDelta(t, -2.0, v3.Y, float64EqualityThreshold)
+	assert.InDelta(t, 2.0, v3.Y, float64EqualityThreshold)
 	assert.InDelta(t, -3.0, v3.Z, float64EqualityThreshold)
 	assert.InDelta(t, 0.0, v3.W, float64EqualityThreshold)
 }
@@ -96,7 +96,7 @@ func TestTupleNegate(t *testing.T) {
 	v2 := Negate(v1)
 
 	assert.InDelta(t, -1.0, v2.X, float64EqualityThreshold)
-	assert.InDelta(t, -2.0, v2.Y, float64EqualityThreshold)
+	assert.InDelta(t, 2.0, v2.Y, float64EqualityThreshold)
 	assert.InDelta(t, -3.0, v2.Z, float64EqualityThreshold)
 	assert.InDelta(t, 4.0, v2.W, float64EqualityThreshold)
 }
@@ -107,7 +107,7 @@ func TestMultiplyByScalar(t *testing.T) {
 
 	assert.InDelta(t, 3.5, t2.X, float64EqualityThreshold)
 	assert.InDelta(t, -7.0, t2.Y, float64EqualityThreshold)
-	assert.InDelta(t, -10.5, t2.Z, float64EqualityThreshold)
+	assert.InDelta(t, 10.5, t2.Z, float64EqualityThreshold)
 	assert.InDelta(t, -14.0, t2.W, float64EqualityThreshold)
 }
 
