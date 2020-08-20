@@ -34,7 +34,7 @@ func (t1 Tuple) Equals(t2 Tuple) bool {
 	return cmp.Equal(t1, t2, opt)
 }
 
-func Add(t1, t2 Tuple) Tuple {
+func AddTuples(t1, t2 Tuple) Tuple {
 	return Tuple{t1.X + t2.X, t1.Y + t2.Y, t1.Z + t2.Z, t1.W + t2.W}
 }
 
@@ -42,7 +42,7 @@ func (t1 Tuple) Add(t2 Tuple) Tuple {
 	return Tuple{t1.X + t2.X, t1.Y + t2.Y, t1.Z + t2.Z, t1.W + t2.W}
 }
 
-func Sub(t1, t2 Tuple) Tuple {
+func SubTuples(t1, t2 Tuple) Tuple {
 	return Tuple{t1.X - t2.X, t1.Y - t2.Y, t1.Z - t2.Z, t1.W - t2.W}
 }
 
@@ -58,7 +58,7 @@ func (t1 Tuple) Negate() Tuple {
 	return Tuple{-t1.X, -t1.Y, -t1.Z, -t1.W}
 }
 
-func MultiplyByScalar(t1 Tuple, scalar float64) Tuple {
+func TupleScalarMultiply(t1 Tuple, scalar float64) Tuple {
 	return Tuple{t1.X * scalar, t1.Y * scalar, t1.Z * scalar, t1.W * scalar}
 }
 
@@ -66,7 +66,7 @@ func (t1 Tuple) MultiplyByScalar(scalar float64) Tuple {
 	return Tuple{t1.X * scalar, t1.Y * scalar, t1.Z * scalar, t1.W * scalar}
 }
 
-func DivideByScalar(t1 Tuple, scalar float64) Tuple {
+func TupleScalarDivide(t1 Tuple, scalar float64) Tuple {
 	return Tuple{t1.X / scalar, t1.Y / scalar, t1.Z / scalar, t1.W / scalar}
 }
 

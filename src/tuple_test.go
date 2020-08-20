@@ -50,7 +50,7 @@ func TestPointIsTuple(t *testing.T) {
 func TestTupleAdd(t *testing.T) {
 	t1 := Tuple{3, -2, 5, 1}
 	t2 := Tuple{-2, 3, 1, 0}
-	t3 := Add(t1, t2)
+	t3 := AddTuples(t1, t2)
 
 	assert.InDelta(t, 1.0, t3.X, float64EqualityThreshold)
 	assert.InDelta(t, 1.0, t3.Y, float64EqualityThreshold)
@@ -61,7 +61,7 @@ func TestTupleAdd(t *testing.T) {
 func TestTupleSub(t *testing.T) {
 	p1 := Point(3, 2, 1)
 	p2 := Point(5, 6, 7)
-	p3 := Sub(p1, p2)
+	p3 := SubTuples(p1, p2)
 
 	assert.InDelta(t, -2.0, p3.X, float64EqualityThreshold)
 	assert.InDelta(t, -4.0, p3.Y, float64EqualityThreshold)
@@ -72,7 +72,7 @@ func TestTupleSub(t *testing.T) {
 func TestVectorSub(t *testing.T) {
 	v1 := Vector(3, 2, 1)
 	v2 := Vector(5, 6, 7)
-	v3 := Sub(v1, v2)
+	v3 := SubTuples(v1, v2)
 
 	assert.InDelta(t, -2.0, v3.X, float64EqualityThreshold)
 	assert.InDelta(t, -4.0, v3.Y, float64EqualityThreshold)
@@ -83,7 +83,7 @@ func TestVectorSub(t *testing.T) {
 func TestSubVectorFromZero(t *testing.T) {
 	v1 := Vector(0, 0, 0)
 	v2 := Vector(1, -2, 3)
-	v3 := Sub(v1, v2)
+	v3 := SubTuples(v1, v2)
 
 	assert.InDelta(t, -1.0, v3.X, float64EqualityThreshold)
 	assert.InDelta(t, 2.0, v3.Y, float64EqualityThreshold)
@@ -103,7 +103,7 @@ func TestTupleNegate(t *testing.T) {
 
 func TestMultiplyByScalar(t *testing.T) {
 	t1 := Tuple{1, -2, 3, -4}
-	t2 := MultiplyByScalar(t1, 3.5)
+	t2 := TupleScalarMultiply(t1, 3.5)
 
 	assert.InDelta(t, 3.5, t2.X, float64EqualityThreshold)
 	assert.InDelta(t, -7.0, t2.Y, float64EqualityThreshold)
@@ -113,7 +113,7 @@ func TestMultiplyByScalar(t *testing.T) {
 
 func TestMultiplyByFraction(t *testing.T) {
 	t1 := Tuple{1, -2, 3, -4}
-	t2 := MultiplyByScalar(t1, 0.5)
+	t2 := TupleScalarMultiply(t1, 0.5)
 
 	assert.InDelta(t, 0.5, t2.X, float64EqualityThreshold)
 	assert.InDelta(t, -1.0, t2.Y, float64EqualityThreshold)
@@ -123,7 +123,7 @@ func TestMultiplyByFraction(t *testing.T) {
 
 func TestDivideByScalar(t *testing.T) {
 	t1 := Tuple{1, -2, 3, -4}
-	t2 := DivideByScalar(t1, 2)
+	t2 := TupleScalarDivide(t1, 2)
 
 	assert.InDelta(t, 0.5, t2.X, float64EqualityThreshold)
 	assert.InDelta(t, -1.0, t2.Y, float64EqualityThreshold)
