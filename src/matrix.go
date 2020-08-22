@@ -12,7 +12,7 @@ var Identity4 = MakeMatrix4([]float64{
 })
 
 type Matrix struct {
-	Rows, Cols int
+	rows, cols int
 	elems      []float64
 }
 
@@ -44,10 +44,10 @@ func MakeMatrix2(elems []float64) Matrix {
 }
 
 func MatrixMultiply(mat1, mat2 Matrix) Matrix {
-	mat3 := MakeMatrix4(make([]float64, mat1.Rows*mat2.Cols))
+	mat3 := MakeMatrix4(make([]float64, mat1.rows*mat2.cols))
 
-	for row := 0; row < mat1.Rows; row++ {
-		for col := 0; col < mat2.Cols; col++ {
+	for row := 0; row < mat1.rows; row++ {
+		for col := 0; col < mat2.cols; col++ {
 			mat3.Set(multiplyRowCol(mat1, mat2, row, col), row, col)
 		}
 	}
@@ -70,10 +70,10 @@ func MatrixTupleMultiply(mat Matrix, t Tuple) Tuple {
 }
 
 func MatrixTranspose(mat Matrix) Matrix {
-	transposed := MakeMatrix4(make([]float64, mat.Rows*mat.Cols))
+	transposed := MakeMatrix4(make([]float64, mat.rows*mat.cols))
 
-	for row := 0; row < mat.Rows; row++ {
-		for col := 0; col < mat.Cols; col++ {
+	for row := 0; row < mat.rows; row++ {
+		for col := 0; col < mat.cols; col++ {
 			transposed.Set(mat.Get(col, row), row, col)
 		}
 	}
@@ -82,14 +82,14 @@ func MatrixTranspose(mat Matrix) Matrix {
 }
 
 func MatrixSubmatrix(mat Matrix, row, col int) Matrix {
-	submatrix := MakeMatrix(make([]float64, (mat.Rows-1)*(mat.Cols-1)), mat.Rows-1, mat.Cols-1)
+	submatrix := MakeMatrix(make([]float64, (mat.rows-1)*(mat.cols-1)), mat.rows-1, mat.cols-1)
 	currIndex := 0
 
-	for i := 0; i < mat.Rows; i++ {
+	for i := 0; i < mat.rows; i++ {
 		if i == row {
 			continue
 		}
-		for j := 0; j < mat.Cols; j++ {
+		for j := 0; j < mat.cols; j++ {
 			if j == col {
 				continue
 			}
@@ -102,11 +102,19 @@ func MatrixSubmatrix(mat Matrix, row, col int) Matrix {
 }
 
 func MatrixMinor(mat Matrix, row, col int) float64 {
+	if !mat.IsSquare() {
+		panic("The minor is only defined for square matrices")
+	}
+
 	submatrix := MatrixSubmatrix(mat, row, col)
 	return MatrixDeterminant(submatrix)
 }
 
 func MatrixCofactor(mat Matrix, row, col int) float64 {
+	if !mat.IsSquare() {
+		panic("The cofactor is only defined for square matrices")
+	}
+
 	cofactor := MatrixMinor(mat, row, col)
 
 	if (row+col)%2 != 0 {
@@ -117,17 +125,17 @@ func MatrixCofactor(mat Matrix, row, col int) float64 {
 }
 
 func MatrixDeterminant(mat Matrix) float64 {
-	if mat.Rows != mat.Cols {
+	if !mat.IsSquare() {
 		panic("The determinant is only defined for square matrices")
 	}
 
-	if mat.Cols == 2 {
+	if mat.cols == 2 {
 		return mat.Get(0, 0)*mat.Get(1, 1) - mat.Get(0, 1)*mat.Get(1, 0)
 	}
 
 	var determinant float64 = 0.0
 
-	for col := 0; col < mat.Cols; col++ {
+	for col := 0; col < mat.cols; col++ {
 		determinant += (mat.Get(0, col) * MatrixCofactor(mat, 0, col))
 	}
 
@@ -141,7 +149,7 @@ func MatrixIsInvertible(mat Matrix) bool {
 }
 
 func MatrixInverse(mat Matrix) Matrix {
-	if mat.Rows != mat.Cols {
+	if !mat.IsSquare() {
 		panic("The inverse is only defined for square matrices")
 	}
 
@@ -149,11 +157,11 @@ func MatrixInverse(mat Matrix) Matrix {
 		panic("The given matrix is not invertible")
 	}
 
-	inverse := MakeMatrix(make([]float64, mat.Rows*mat.Cols), mat.Rows, mat.Cols)
+	inverse := MakeMatrix(make([]float64, mat.rows*mat.cols), mat.rows, mat.cols)
 	determinant := MatrixDeterminant(mat)
 
-	for row := 0; row < mat.Rows; row++ {
-		for col := 0; col < mat.Cols; col++ {
+	for row := 0; row < mat.rows; row++ {
+		for col := 0; col < mat.cols; col++ {
 			cofactor := MatrixCofactor(mat, row, col)
 			inverse.Set(cofactor/determinant, col, row)
 		}
@@ -162,22 +170,26 @@ func MatrixInverse(mat Matrix) Matrix {
 	return inverse
 }
 
-func (mat Matrix) Get(row, col int) float64 {
-	return mat.elems[row*mat.Cols+col]
+func (mat *Matrix) Get(row, col int) float64 {
+	return mat.elems[row*mat.cols+col]
 }
 
 func (mat *Matrix) Set(val float64, row, col int) {
-	mat.elems[row*mat.Cols+col] = val
+	mat.elems[row*mat.cols+col] = val
 }
 
-func (mat Matrix) GetByIndex(index int) float64 {
+func (mat *Matrix) GetByIndex(index int) float64 {
 	return mat.elems[index]
+}
+
+func (mat *Matrix) IsSquare() bool {
+	return mat.cols == mat.rows
 }
 
 func multiplyRowCol(mat1, mat2 Matrix, row, col int) float64 {
 	result := 0.0
 
-	for i := 0; i < mat1.Rows; i++ {
+	for i := 0; i < mat1.rows; i++ {
 		result += mat1.Get(row, i) * mat2.Get(i, col)
 	}
 
