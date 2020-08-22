@@ -11,26 +11,43 @@ var Identity4 = MakeMatrix4([]float64{
 	0, 0, 0, 1,
 })
 
-type Matrix4 [16]float64
-type Matrix3 [9]float64
-type Matrix2 [4]float64
-
-func MakeMatrix4(elems []float64) Matrix4 {
-	var matrix [16]float64
-	copy(matrix[:], elems)
-
-	return matrix
+type Matrix struct {
+	Rows, Cols int
+	elems      []float64
 }
 
-func Matrix4Equals(mat1 Matrix4, mat2 Matrix4) bool {
-	return cmp.Equal(mat1, mat2, opt)
+func MakeMatrix(elems []float64, numRows, numCols int) Matrix {
+	if len(elems) != numRows*numCols {
+		panic("The number of values and matrix dimensions do not match")
+	}
+
+	mat := Matrix{numRows, numCols, make([]float64, numRows*numCols)}
+	copy(mat.elems[:], elems)
+	return mat
 }
 
-func Matrix4Multiply(mat1 Matrix4, mat2 Matrix4) Matrix4 {
-	mat3 := MakeMatrix4(make([]float64, 16))
+func MatrixEquals(mat1, mat2 Matrix) bool {
+	return cmp.Equal(mat1.elems, mat2.elems, opt)
+}
 
-	for row := 0; row < 4; row++ {
-		for col := 0; col < 4; col++ {
+func MakeMatrix4(elems []float64) Matrix {
+	return MakeMatrix(elems, 4, 4)
+}
+
+func MakeMatrix3(elems []float64) Matrix {
+	return MakeMatrix(elems, 3, 3)
+
+}
+
+func MakeMatrix2(elems []float64) Matrix {
+	return MakeMatrix(elems, 2, 2)
+}
+
+func MatrixMultiply(mat1, mat2 Matrix) Matrix {
+	mat3 := MakeMatrix4(make([]float64, mat1.Rows*mat2.Cols))
+
+	for row := 0; row < mat1.Rows; row++ {
+		for col := 0; col < mat2.Cols; col++ {
 			mat3.Set(multiplyRowCol(mat1, mat2, row, col), row, col)
 		}
 	}
@@ -38,7 +55,7 @@ func Matrix4Multiply(mat1 Matrix4, mat2 Matrix4) Matrix4 {
 	return mat3
 }
 
-func Matrix4TupleMultiply(mat Matrix4, t Tuple) Tuple {
+func MatrixTupleMultiply(mat Matrix, t Tuple) Tuple {
 	results := make([]float64, 4)
 
 	for row := 0; row < 4; row++ {
@@ -46,18 +63,17 @@ func Matrix4TupleMultiply(mat Matrix4, t Tuple) Tuple {
 		a1 := mat.Get(row, 1) * t.Y
 		a2 := mat.Get(row, 2) * t.Z
 		a3 := mat.Get(row, 3) * t.W
-
 		results[row] = a0 + a1 + a2 + a3
 	}
 
 	return Tuple{results[0], results[1], results[2], results[3]}
 }
 
-func Matrix4Transpose(mat Matrix4) Matrix4 {
-	transposed := MakeMatrix4(make([]float64, 16))
+func MatrixTranspose(mat Matrix) Matrix {
+	transposed := MakeMatrix4(make([]float64, mat.Rows*mat.Cols))
 
-	for row := 0; row < 4; row++ {
-		for col := 0; col < 4; col++ {
+	for row := 0; row < mat.Rows; row++ {
+		for col := 0; col < mat.Cols; col++ {
 			transposed.Set(mat.Get(col, row), row, col)
 		}
 	}
@@ -65,19 +81,19 @@ func Matrix4Transpose(mat Matrix4) Matrix4 {
 	return transposed
 }
 
-func Matrix4Submatrix(mat Matrix4, row, col int) Matrix3 {
-	submatrix := MakeMatrix3(make([]float64, 9))
+func MatrixSubmatrix(mat Matrix, row, col int) Matrix {
+	submatrix := MakeMatrix(make([]float64, (mat.Rows-1)*(mat.Cols-1)), mat.Rows-1, mat.Cols-1)
 	currIndex := 0
 
-	for i := 0; i < 4; i++ {
+	for i := 0; i < mat.Rows; i++ {
 		if i == row {
 			continue
 		}
-		for j := 0; j < 4; j++ {
+		for j := 0; j < mat.Cols; j++ {
 			if j == col {
 				continue
 			}
-			submatrix[currIndex] = mat.Get(i, j)
+			submatrix.elems[currIndex] = mat.Get(i, j)
 			currIndex++
 		}
 	}
@@ -85,13 +101,13 @@ func Matrix4Submatrix(mat Matrix4, row, col int) Matrix3 {
 	return submatrix
 }
 
-func Matrix4Minor(mat Matrix4, row, col int) float64 {
-	submatrix := Matrix4Submatrix(mat, row, col)
-	return Matrix3Determinant(submatrix)
+func MatrixMinor(mat Matrix, row, col int) float64 {
+	submatrix := MatrixSubmatrix(mat, row, col)
+	return MatrixDeterminant(submatrix)
 }
 
-func Matrix4Cofactor(mat Matrix4, row, col int) float64 {
-	cofactor := Matrix4Minor(mat, row, col)
+func MatrixCofactor(mat Matrix, row, col int) float64 {
+	cofactor := MatrixMinor(mat, row, col)
 
 	if (row+col)%2 != 0 {
 		cofactor *= -1
@@ -100,33 +116,45 @@ func Matrix4Cofactor(mat Matrix4, row, col int) float64 {
 	return cofactor
 }
 
-func Matrix4Determinant(mat Matrix4) float64 {
+func MatrixDeterminant(mat Matrix) float64 {
+	if mat.Rows != mat.Cols {
+		panic("The determinant is only defined for square matrices")
+	}
+
+	if mat.Cols == 2 {
+		return mat.Get(0, 0)*mat.Get(1, 1) - mat.Get(0, 1)*mat.Get(1, 0)
+	}
+
 	var determinant float64 = 0.0
 
-	for col := 0; col < 4; col++ {
-		determinant += (mat.Get(0, col) * Matrix4Cofactor(mat, 0, col))
+	for col := 0; col < mat.Cols; col++ {
+		determinant += (mat.Get(0, col) * MatrixCofactor(mat, 0, col))
 	}
 
 	return determinant
 }
 
-func Matrix4IsInvertible(mat Matrix4) bool {
-	determinant := Matrix4Determinant(mat)
+func MatrixIsInvertible(mat Matrix) bool {
+	determinant := MatrixDeterminant(mat)
 
 	return !(determinant == 0)
 }
 
-func Matrix4Inverse(mat Matrix4) Matrix4 {
-	if !Matrix4IsInvertible(mat) {
+func MatrixInverse(mat Matrix) Matrix {
+	if mat.Rows != mat.Cols {
+		panic("The inverse is only defined for square matrices")
+	}
+
+	if !MatrixIsInvertible(mat) {
 		panic("The given matrix is not invertible")
 	}
 
-	inverse := MakeMatrix4(make([]float64, 16))
-	determinant := Matrix4Determinant(mat)
+	inverse := MakeMatrix(make([]float64, mat.Rows*mat.Cols), mat.Rows, mat.Cols)
+	determinant := MatrixDeterminant(mat)
 
-	for row := 0; row < 4; row++ {
-		for col := 0; col < 4; col++ {
-			cofactor := Matrix4Cofactor(mat, row, col)
+	for row := 0; row < mat.Rows; row++ {
+		for col := 0; col < mat.Cols; col++ {
+			cofactor := MatrixCofactor(mat, row, col)
 			inverse.Set(cofactor/determinant, col, row)
 		}
 	}
@@ -134,123 +162,24 @@ func Matrix4Inverse(mat Matrix4) Matrix4 {
 	return inverse
 }
 
-func (mat Matrix4) Get(row, col int) float64 {
-	return mat[row*4+col]
+func (mat Matrix) Get(row, col int) float64 {
+	return mat.elems[row*mat.Cols+col]
 }
 
-func (mat *Matrix4) Set(val float64, row, col int) {
-	mat[row*4+col] = val
+func (mat *Matrix) Set(val float64, row, col int) {
+	mat.elems[row*mat.Cols+col] = val
 }
 
-func (mat Matrix4) GetByIndex(index int) float64 {
-	return mat[index]
+func (mat Matrix) GetByIndex(index int) float64 {
+	return mat.elems[index]
 }
 
-func MakeMatrix3(elems []float64) Matrix3 {
-	var matrix [9]float64
-	copy(matrix[:], elems)
+func multiplyRowCol(mat1, mat2 Matrix, row, col int) float64 {
+	result := 0.0
 
-	return matrix
-}
-
-func Matrix3Submatrix(mat Matrix3, row, col int) Matrix2 {
-	submatrix := MakeMatrix2(make([]float64, 4))
-	currIndex := 0
-
-	for i := 0; i < 3; i++ {
-		if i == row {
-			continue
-		}
-		for j := 0; j < 3; j++ {
-			if j == col {
-				continue
-			}
-
-			submatrix[currIndex] = mat.Get(i, j)
-			currIndex++
-		}
+	for i := 0; i < mat1.Rows; i++ {
+		result += mat1.Get(row, i) * mat2.Get(i, col)
 	}
 
-	return submatrix
-}
-
-func Matrix3Minor(mat Matrix3, row, col int) float64 {
-	submatrix := Matrix3Submatrix(mat, row, col)
-	return Matrix2Determinant(submatrix)
-}
-
-func Matrix3Cofactor(mat Matrix3, row, col int) float64 {
-	cofactor := Matrix3Minor(mat, row, col)
-
-	if (row+col)%2 != 0 {
-		cofactor *= -1
-	}
-
-	return cofactor
-}
-
-func Matrix3Determinant(mat Matrix3) float64 {
-	var determinant float64 = 0.0
-
-	for col := 0; col < 3; col++ {
-		determinant += (mat.Get(0, col) * Matrix3Cofactor(mat, 0, col))
-	}
-
-	return determinant
-}
-
-func Matrix3Equals(mat1 Matrix3, mat2 Matrix3) {
-	cmp.Equal(mat1, mat2, opt)
-}
-
-func (mat Matrix3) Get(row, col int) float64 {
-	return mat[row*3+col]
-}
-
-func (mat *Matrix3) Set(val float64, row, col int) {
-	mat[row*3+col] = val
-}
-
-func (mat Matrix3) GetByIndex(index int) float64 {
-	return mat[index]
-}
-
-func MakeMatrix2(elems []float64) Matrix2 {
-	var matrix [4]float64
-	copy(matrix[:], elems)
-
-	return matrix
-}
-
-func Matrix2Equals(mat1 Matrix2, mat2 Matrix2) {
-	cmp.Equal(mat1, mat2, opt)
-}
-
-func Matrix2Determinant(mat Matrix2) float64 {
-	return mat.Get(0, 0)*mat.Get(1, 1) - mat.Get(0, 1)*mat.Get(1, 0)
-}
-
-func (mat Matrix2) Get(row, col int) float64 {
-	return mat[row*2+col]
-}
-
-func (mat *Matrix2) Set(val float64, row, col int) {
-	mat[row*2+col] = val
-}
-
-func (mat Matrix2) GetByIndex(index int) float64 {
-	return mat[index]
-}
-
-func (mat Matrix2) Equals(mat1 Matrix2) bool {
-	return cmp.Equal(mat, mat1, opt)
-}
-
-func multiplyRowCol(mat1, mat2 Matrix4, row, col int) float64 {
-	a0 := mat1.Get(row, 0) * mat2.Get(0, col)
-	a1 := mat1.Get(row, 1) * mat2.Get(1, col)
-	a2 := mat1.Get(row, 2) * mat2.Get(2, col)
-	a3 := mat1.Get(row, 3) * mat2.Get(3, col)
-
-	return a0 + a1 + a2 + a3
+	return result
 }

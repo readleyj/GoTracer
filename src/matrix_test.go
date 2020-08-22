@@ -72,7 +72,7 @@ func TestMatrix4EqualityIdentical(t *testing.T) {
 	mat1 := MakeMatrix4(elems1)
 	mat2 := MakeMatrix4(elems2)
 
-	assert.True(t, Matrix4Equals(mat1, mat2))
+	assert.True(t, MatrixEquals(mat1, mat2))
 }
 
 func TestMatrix4EqualityDifferent(t *testing.T) {
@@ -93,7 +93,7 @@ func TestMatrix4EqualityDifferent(t *testing.T) {
 	mat1 := MakeMatrix4(elems1)
 	mat2 := MakeMatrix4(elems2)
 
-	assert.False(t, Matrix4Equals(mat1, mat2))
+	assert.False(t, MatrixEquals(mat1, mat2))
 }
 
 func TestMatrixMultiply4x4(t *testing.T) {
@@ -120,7 +120,7 @@ func TestMatrixMultiply4x4(t *testing.T) {
 
 	mat1 := MakeMatrix4(elems1)
 	mat2 := MakeMatrix4(elems2)
-	mat3 := Matrix4Multiply(mat1, mat2)
+	mat3 := MatrixMultiply(mat1, mat2)
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
@@ -139,7 +139,7 @@ func TestMatrix4TupleMultiply(t *testing.T) {
 
 	mat := MakeMatrix4(elems)
 	tuple := Tuple{1, 2, 3, 1}
-	result := Matrix4TupleMultiply(mat, tuple)
+	result := MatrixTupleMultiply(mat, tuple)
 
 	assert.InDelta(t, 18.0, result.X, float64EqualityThreshold)
 	assert.InDelta(t, 24.0, result.Y, float64EqualityThreshold)
@@ -158,11 +158,11 @@ func TestMatrix4IdentityMultiply(t *testing.T) {
 	mat := MakeMatrix4(elems)
 	identity := Identity4
 
-	matByIdentity := Matrix4Multiply(mat, identity)
-	identityByMat := Matrix4Multiply(identity, mat)
+	matByIdentity := MatrixMultiply(mat, identity)
+	identityByMat := MatrixMultiply(identity, mat)
 
-	assert.True(t, Matrix4Equals(mat, matByIdentity))
-	assert.True(t, Matrix4Equals(mat, identityByMat))
+	assert.True(t, MatrixEquals(mat, matByIdentity))
+	assert.True(t, MatrixEquals(mat, identityByMat))
 }
 
 func TestMatrix4Transpose(t *testing.T) {
@@ -181,7 +181,7 @@ func TestMatrix4Transpose(t *testing.T) {
 	}
 
 	mat1 := MakeMatrix4(elems)
-	mat2 := Matrix4Transpose(mat1)
+	mat2 := MatrixTranspose(mat1)
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
@@ -191,9 +191,9 @@ func TestMatrix4Transpose(t *testing.T) {
 }
 
 func TestIdentity4Transpose(t *testing.T) {
-	transposedIdentity := Matrix4Transpose(Identity4)
+	transposedIdentity := MatrixTranspose(Identity4)
 
-	assert.True(t, Matrix4Equals(Identity4, transposedIdentity))
+	assert.True(t, MatrixEquals(Identity4, transposedIdentity))
 }
 
 func TestMatrix2Determinant(t *testing.T) {
@@ -203,7 +203,7 @@ func TestMatrix2Determinant(t *testing.T) {
 	}
 
 	mat := MakeMatrix2(elems)
-	determinant := Matrix2Determinant(mat)
+	determinant := MatrixDeterminant(mat)
 
 	assert.InDelta(t, 17.0, determinant, float64EqualityThreshold)
 }
@@ -223,7 +223,7 @@ func TestMatrix4Submatrix(t *testing.T) {
 	}
 
 	mat := MakeMatrix4(elems)
-	submatrix := Matrix4Submatrix(mat, 2, 1)
+	submatrix := MatrixSubmatrix(mat, 2, 1)
 
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
@@ -245,7 +245,7 @@ func TestMatrix3Submatrix(t *testing.T) {
 	}
 
 	mat := MakeMatrix3(elems)
-	submatrix := Matrix3Submatrix(mat, 0, 2)
+	submatrix := MatrixSubmatrix(mat, 0, 2)
 
 	for i := 0; i < 2; i++ {
 		for j := 0; j < 2; j++ {
@@ -262,10 +262,10 @@ func TestMatrix3Minor(t *testing.T) {
 	}
 
 	mat := MakeMatrix3(elems)
-	matB := Matrix3Submatrix(mat, 1, 0)
+	matB := MatrixSubmatrix(mat, 1, 0)
 
-	assert.InDelta(t, 25.0, Matrix2Determinant(matB), float64EqualityThreshold)
-	assert.InDelta(t, 25.0, Matrix3Minor(mat, 1, 0), float64EqualityThreshold)
+	assert.InDelta(t, 25.0, MatrixDeterminant(matB), float64EqualityThreshold)
+	assert.InDelta(t, 25.0, MatrixMinor(mat, 1, 0), float64EqualityThreshold)
 }
 
 func TestMatrix3Cofactor(t *testing.T) {
@@ -277,11 +277,11 @@ func TestMatrix3Cofactor(t *testing.T) {
 
 	mat := MakeMatrix3(elems)
 
-	minor1, cofactor1 := Matrix3Minor(mat, 0, 0), Matrix3Cofactor(mat, 0, 0)
+	minor1, cofactor1 := MatrixMinor(mat, 0, 0), MatrixCofactor(mat, 0, 0)
 	assert.InDelta(t, -12.0, minor1, float64EqualityThreshold)
 	assert.InDelta(t, -12.0, cofactor1, float64EqualityThreshold)
 
-	minor2, cofactor2 := Matrix3Minor(mat, 1, 0), Matrix3Cofactor(mat, 1, 0)
+	minor2, cofactor2 := MatrixMinor(mat, 1, 0), MatrixCofactor(mat, 1, 0)
 	assert.InDelta(t, 25.0, minor2, float64EqualityThreshold)
 	assert.InDelta(t, -25.0, cofactor2, float64EqualityThreshold)
 }
@@ -295,10 +295,10 @@ func TestMatrix3Determinant(t *testing.T) {
 
 	mat := MakeMatrix3(elems)
 
-	cofactor1 := Matrix3Cofactor(mat, 0, 0)
-	cofactor2 := Matrix3Cofactor(mat, 0, 1)
-	cofactor3 := Matrix3Cofactor(mat, 0, 2)
-	determinant := Matrix3Determinant(mat)
+	cofactor1 := MatrixCofactor(mat, 0, 0)
+	cofactor2 := MatrixCofactor(mat, 0, 1)
+	cofactor3 := MatrixCofactor(mat, 0, 2)
+	determinant := MatrixDeterminant(mat)
 
 	assert.InDelta(t, 56.0, cofactor1, float64EqualityThreshold)
 	assert.InDelta(t, 12.0, cofactor2, float64EqualityThreshold)
@@ -316,11 +316,11 @@ func TestMatrix4Determinant(t *testing.T) {
 
 	mat := MakeMatrix4(elems)
 
-	cofactor1 := Matrix4Cofactor(mat, 0, 0)
-	cofactor2 := Matrix4Cofactor(mat, 0, 1)
-	cofactor3 := Matrix4Cofactor(mat, 0, 2)
-	cofactor4 := Matrix4Cofactor(mat, 0, 3)
-	determinant := Matrix4Determinant(mat)
+	cofactor1 := MatrixCofactor(mat, 0, 0)
+	cofactor2 := MatrixCofactor(mat, 0, 1)
+	cofactor3 := MatrixCofactor(mat, 0, 2)
+	cofactor4 := MatrixCofactor(mat, 0, 3)
+	determinant := MatrixDeterminant(mat)
 
 	assert.InDelta(t, 690.0, cofactor1, float64EqualityThreshold)
 	assert.InDelta(t, 447.0, cofactor2, float64EqualityThreshold)
@@ -339,9 +339,9 @@ func TestInvertabilityForInvertable(t *testing.T) {
 
 	mat := MakeMatrix4(elems)
 
-	determinant := Matrix4Determinant(mat)
+	determinant := MatrixDeterminant(mat)
 	assert.InDelta(t, -2120.0, determinant, float64EqualityThreshold)
-	assert.True(t, Matrix4IsInvertible(mat))
+	assert.True(t, MatrixIsInvertible(mat))
 }
 
 func TestInvertabilityForNoninvertable(t *testing.T) {
@@ -354,9 +354,9 @@ func TestInvertabilityForNoninvertable(t *testing.T) {
 
 	mat := MakeMatrix4(elems)
 
-	determinant := Matrix4Determinant(mat)
+	determinant := MatrixDeterminant(mat)
 	assert.InDelta(t, 0.0, determinant, float64EqualityThreshold)
-	assert.False(t, Matrix4IsInvertible(mat))
+	assert.False(t, MatrixIsInvertible(mat))
 }
 
 func TestMatrix4Inverse(t *testing.T) {
@@ -375,11 +375,11 @@ func TestMatrix4Inverse(t *testing.T) {
 	}
 
 	mat := MakeMatrix4(elems)
-	inverse := Matrix4Inverse(mat)
+	inverse := MatrixInverse(mat)
 
-	determinant := Matrix4Determinant(mat)
-	cofactor1 := Matrix4Cofactor(mat, 2, 3)
-	cofactor2 := Matrix4Cofactor(mat, 3, 2)
+	determinant := MatrixDeterminant(mat)
+	cofactor1 := MatrixCofactor(mat, 2, 3)
+	cofactor2 := MatrixCofactor(mat, 3, 2)
 
 	assert.InDelta(t, 532.0, determinant, float64EqualityThreshold)
 	assert.InDelta(t, -160.0, cofactor1, float64EqualityThreshold)
@@ -410,7 +410,7 @@ func TestMatrix4InverseAdditional(t *testing.T) {
 	}
 
 	mat := MakeMatrix4(elems)
-	inverse := Matrix4Inverse(mat)
+	inverse := MatrixInverse(mat)
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
@@ -433,7 +433,7 @@ func TestMatrix4InverseAdditional(t *testing.T) {
 	}
 
 	mat = MakeMatrix4(elems)
-	inverse = Matrix4Inverse(mat)
+	inverse = MatrixInverse(mat)
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
@@ -459,8 +459,8 @@ func TestInverseReversesMultiplication(t *testing.T) {
 
 	matA := MakeMatrix4(elemsA)
 	matB := MakeMatrix4(elemsB)
-	matC := Matrix4Multiply(matA, matB)
-	reversed := Matrix4Multiply(matC, Matrix4Inverse(matB))
+	matC := MatrixMultiply(matA, matB)
+	reversed := MatrixMultiply(matC, MatrixInverse(matB))
 
-	assert.True(t, Matrix4Equals(matA, reversed))
+	assert.True(t, MatrixEquals(matA, reversed))
 }
