@@ -43,6 +43,10 @@ func MakeMatrix2(elems []float64) Matrix {
 	return MakeMatrix(elems, 2, 2)
 }
 
+func MakeIdentity4() Matrix {
+	return MakeMatrix4(Identity4.elems)
+}
+
 func MatrixMultiply(mat1, mat2 Matrix) Matrix {
 	mat3 := MakeMatrix4(make([]float64, mat1.rows*mat2.cols))
 
