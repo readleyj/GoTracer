@@ -9,7 +9,7 @@ import (
 
 func TestIntersectionEncapsulatesObjectAndT(t *testing.T) {
 	s := MakeSphere()
-	i := MakeIntersection(3.5, &s)
+	i := MakeIntersection(3.5, s)
 
 	assert.InDelta(t, 3.5, i.T, float64EqualityThreshold)
 	assert.Equal(t, s.ID, (*i.Object).ID)
@@ -17,8 +17,8 @@ func TestIntersectionEncapsulatesObjectAndT(t *testing.T) {
 
 func TestAggregatingIntersections(t *testing.T) {
 	s := MakeSphere()
-	i1 := MakeIntersection(1, &s)
-	i2 := MakeIntersection(2, &s)
+	i1 := MakeIntersection(1, s)
+	i2 := MakeIntersection(2, s)
 	xs := MakeIntersections(i1, i2)
 
 	assert.Equal(t, 2, len(xs))
@@ -38,8 +38,8 @@ func TestIntersectSetsObjectOnIntersection(t *testing.T) {
 
 func TestHitWhenAllIntersectionsHavePositiveT(t *testing.T) {
 	s := MakeSphere()
-	i1 := MakeIntersection(1, &s)
-	i2 := MakeIntersection(2, &s)
+	i1 := MakeIntersection(1, s)
+	i2 := MakeIntersection(2, s)
 	xs := MakeIntersections(i2, i1)
 	i := Hit(xs)
 
@@ -49,8 +49,8 @@ func TestHitWhenAllIntersectionsHavePositiveT(t *testing.T) {
 
 func TestHitWhenSomeIntersectionsHaveNegativeT(t *testing.T) {
 	s := MakeSphere()
-	i1 := MakeIntersection(-1, &s)
-	i2 := MakeIntersection(1, &s)
+	i1 := MakeIntersection(-1, s)
+	i2 := MakeIntersection(1, s)
 	xs := MakeIntersections(i2, i1)
 	i := Hit(xs)
 
@@ -60,8 +60,8 @@ func TestHitWhenSomeIntersectionsHaveNegativeT(t *testing.T) {
 
 func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
 	s := MakeSphere()
-	i1 := MakeIntersection(-2, &s)
-	i2 := MakeIntersection(-1, &s)
+	i1 := MakeIntersection(-2, s)
+	i2 := MakeIntersection(-1, s)
 	xs := MakeIntersections(i2, i1)
 	i := Hit(xs)
 	empty := Intersection{}
@@ -71,10 +71,10 @@ func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
 
 func TestHitIsLowestNonnegativeIntersection(t *testing.T) {
 	s := MakeSphere()
-	i1 := MakeIntersection(5, &s)
-	i2 := MakeIntersection(7, &s)
-	i3 := MakeIntersection(-3, &s)
-	i4 := MakeIntersection(2, &s)
+	i1 := MakeIntersection(5, s)
+	i2 := MakeIntersection(7, s)
+	i3 := MakeIntersection(-3, s)
+	i4 := MakeIntersection(2, s)
 	xs := MakeIntersections(i1, i2, i3, i4)
 	i := Hit(xs)
 
