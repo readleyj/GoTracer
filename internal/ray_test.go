@@ -11,8 +11,8 @@ func TestCreateRay(t *testing.T) {
 	direction := Vector(4, 5, 6)
 	r := Ray{origin, direction}
 
-	assert.True(t, origin.Equals(r.origin))
-	assert.True(t, direction.Equals(r.direction))
+	assert.True(t, origin.Equals(r.Origin))
+	assert.True(t, direction.Equals(r.Direction))
 }
 
 func TestComputePointFromDistance(t *testing.T) {
@@ -86,8 +86,8 @@ func TestTranslateRay(t *testing.T) {
 	m := Translate(3, 4, 5)
 	r2 := TransformRay(r, m)
 
-	assert.True(t, r2.origin.Equals(Point(4, 6, 8)))
-	assert.True(t, r2.direction.Equals(Vector(0, 1, 0)))
+	assert.True(t, r2.Origin.Equals(Point(4, 6, 8)))
+	assert.True(t, r2.Direction.Equals(Vector(0, 1, 0)))
 }
 
 func TestScaleRay(t *testing.T) {
@@ -95,6 +95,6 @@ func TestScaleRay(t *testing.T) {
 	m := Scale(2, 3, 4)
 	r2 := TransformRay(r, m)
 
-	assert.True(t, r2.origin.Equals(Point(2, 6, 12)))
-	assert.True(t, r2.direction.Equals(Vector(0, 3, 0)))
+	assert.True(t, r2.Origin.Equals(Point(2, 6, 12)))
+	assert.True(t, r2.Direction.Equals(Vector(0, 3, 0)))
 }

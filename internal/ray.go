@@ -1,16 +1,16 @@
 package internal
 
 type Ray struct {
-	origin, direction Tuple
+	Origin, Direction Tuple
 }
 
 func Position(r Ray, dist float64) Tuple {
-	return AddTuples(r.origin, r.direction.MultiplyByScalar(dist))
+	return AddTuples(r.Origin, r.Direction.MultiplyByScalar(dist))
 }
 
 func TransformRay(r Ray, transform Matrix) Ray {
-	newOrigin := MatrixTupleMultiply(transform, r.origin)
-	newDirection := MatrixTupleMultiply(transform, r.direction)
+	newOrigin := MatrixTupleMultiply(transform, r.Origin)
+	newDirection := MatrixTupleMultiply(transform, r.Direction)
 
 	return Ray{newOrigin, newDirection}
 }

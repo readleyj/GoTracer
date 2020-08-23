@@ -21,10 +21,10 @@ func MakeSphere() *Sphere {
 
 func Intersect(s *Sphere, ray Ray) Intersections {
 	r := TransformRay(ray, MatrixInverse(s.Transform))
-	sphereToRay := SubTuples(r.origin, Point(0, 0, 0))
+	sphereToRay := SubTuples(r.Origin, Point(0, 0, 0))
 
-	a := Dot(r.direction, r.direction)
-	b := 2 * Dot(r.direction, sphereToRay)
+	a := Dot(r.Direction, r.Direction)
+	b := 2 * Dot(r.Direction, sphereToRay)
 	c := Dot(sphereToRay, sphereToRay) - 1
 	discriminant := b*b - 4*a*c
 
