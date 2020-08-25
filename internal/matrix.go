@@ -4,7 +4,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-var Identity4 = MakeMatrix4([]float64{
+var Identity4 = NewMatrix4([]float64{
 	1, 0, 0, 0,
 	0, 1, 0, 0,
 	0, 0, 1, 0,
@@ -16,7 +16,7 @@ type Matrix struct {
 	elems      []float64
 }
 
-func MakeMatrix(elems []float64, numRows, numCols int) Matrix {
+func NewMatrix(elems []float64, numRows, numCols int) Matrix {
 	if len(elems) != numRows*numCols {
 		panic("The number of values and matrix dimensions do not match")
 	}
@@ -30,25 +30,25 @@ func MatrixEquals(mat1, mat2 Matrix) bool {
 	return cmp.Equal(mat1.elems, mat2.elems, opt)
 }
 
-func MakeMatrix4(elems []float64) Matrix {
-	return MakeMatrix(elems, 4, 4)
+func NewMatrix4(elems []float64) Matrix {
+	return NewMatrix(elems, 4, 4)
 }
 
-func MakeMatrix3(elems []float64) Matrix {
-	return MakeMatrix(elems, 3, 3)
+func NewMatrix3(elems []float64) Matrix {
+	return NewMatrix(elems, 3, 3)
 
 }
 
-func MakeMatrix2(elems []float64) Matrix {
-	return MakeMatrix(elems, 2, 2)
+func NewMatrix2(elems []float64) Matrix {
+	return NewMatrix(elems, 2, 2)
 }
 
-func MakeIdentity4() Matrix {
-	return MakeMatrix4(Identity4.elems)
+func NewIdentity4() Matrix {
+	return NewMatrix4(Identity4.elems)
 }
 
 func MatrixMultiply(mat1, mat2 Matrix) Matrix {
-	mat3 := MakeMatrix4(make([]float64, mat1.rows*mat2.cols))
+	mat3 := NewMatrix4(make([]float64, mat1.rows*mat2.cols))
 
 	for row := 0; row < mat1.rows; row++ {
 		for col := 0; col < mat2.cols; col++ {
@@ -74,7 +74,7 @@ func MatrixTupleMultiply(mat Matrix, t Tuple) Tuple {
 }
 
 func MatrixTranspose(mat Matrix) Matrix {
-	transposed := MakeMatrix4(make([]float64, mat.rows*mat.cols))
+	transposed := NewMatrix4(make([]float64, mat.rows*mat.cols))
 
 	for row := 0; row < mat.rows; row++ {
 		for col := 0; col < mat.cols; col++ {
@@ -86,7 +86,7 @@ func MatrixTranspose(mat Matrix) Matrix {
 }
 
 func MatrixSubmatrix(mat Matrix, row, col int) Matrix {
-	submatrix := MakeMatrix(make([]float64, (mat.rows-1)*(mat.cols-1)), mat.rows-1, mat.cols-1)
+	submatrix := NewMatrix(make([]float64, (mat.rows-1)*(mat.cols-1)), mat.rows-1, mat.cols-1)
 	currIndex := 0
 
 	for i := 0; i < mat.rows; i++ {
@@ -161,7 +161,7 @@ func MatrixInverse(mat Matrix) Matrix {
 		panic("The given matrix is not invertible")
 	}
 
-	inverse := MakeMatrix(make([]float64, mat.rows*mat.cols), mat.rows, mat.cols)
+	inverse := NewMatrix(make([]float64, mat.rows*mat.cols), mat.rows, mat.cols)
 	determinant := MatrixDeterminant(mat)
 
 	for row := 0; row < mat.rows; row++ {

@@ -9,7 +9,7 @@ import (
 
 func TestPointTranslation(t *testing.T) {
 	transform := Translate(5, -3, 2)
-	p := Point(-3, 4, 5)
+	p := NewPoint(-3, 4, 5)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -21,7 +21,7 @@ func TestPointTranslation(t *testing.T) {
 func TestPointInverseTranslation(t *testing.T) {
 	transform := Translate(5, -3, 2)
 	invTransform := MatrixInverse(transform)
-	p := Point(-3, 4, 5)
+	p := NewPoint(-3, 4, 5)
 	result := MatrixTupleMultiply(invTransform, p)
 
 	assert.True(t, result.IsPoint())
@@ -32,7 +32,7 @@ func TestPointInverseTranslation(t *testing.T) {
 
 func TestVectorNotAffectedByTranslation(t *testing.T) {
 	transform := Translate(5, -3, 2)
-	v := Vector(-3, 4, 5)
+	v := NewVector(-3, 4, 5)
 	result := MatrixTupleMultiply(transform, v)
 
 	assert.True(t, result.IsVector())
@@ -43,7 +43,7 @@ func TestVectorNotAffectedByTranslation(t *testing.T) {
 
 func TestPointScaling(t *testing.T) {
 	transform := Scale(2, 3, 4)
-	p := Point(-4, 6, 8)
+	p := NewPoint(-4, 6, 8)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -54,7 +54,7 @@ func TestPointScaling(t *testing.T) {
 
 func TestVectorScaling(t *testing.T) {
 	transform := Scale(2, 3, 4)
-	v := Vector(-4, 6, 8)
+	v := NewVector(-4, 6, 8)
 	result := MatrixTupleMultiply(transform, v)
 
 	assert.True(t, result.IsVector())
@@ -66,7 +66,7 @@ func TestVectorScaling(t *testing.T) {
 func TestInverseScaling(t *testing.T) {
 	transform := Scale(2, 3, 4)
 	invTransform := MatrixInverse(transform)
-	v := Vector(-4, 6, 8)
+	v := NewVector(-4, 6, 8)
 	result := MatrixTupleMultiply(invTransform, v)
 
 	assert.True(t, result.IsVector())
@@ -77,7 +77,7 @@ func TestInverseScaling(t *testing.T) {
 
 func TestReflectionIsScalingByNegative(t *testing.T) {
 	transform := Scale(-1, 1, 1)
-	p := Point(2, 3, 4)
+	p := NewPoint(2, 3, 4)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -87,7 +87,7 @@ func TestReflectionIsScalingByNegative(t *testing.T) {
 }
 
 func TestRotationAroundX(t *testing.T) {
-	p := Point(0, 1, 0)
+	p := NewPoint(0, 1, 0)
 
 	halfQuarter := RotateX(math.Pi / 4)
 	fullQuarter := RotateX(math.Pi / 2)
@@ -106,7 +106,7 @@ func TestRotationAroundX(t *testing.T) {
 }
 
 func TestRotationInverseRotatesInOppositeDirection(t *testing.T) {
-	p := Point(0, 1, 0)
+	p := NewPoint(0, 1, 0)
 
 	halfQuarter := RotateX(math.Pi / 4)
 	invHalfQuarter := MatrixInverse(halfQuarter)
@@ -119,7 +119,7 @@ func TestRotationInverseRotatesInOppositeDirection(t *testing.T) {
 }
 
 func TestRotationAroundY(t *testing.T) {
-	p := Point(0, 0, 1)
+	p := NewPoint(0, 0, 1)
 
 	halfQuarter := RotateY(math.Pi / 4)
 	fullQuarter := RotateY(math.Pi / 2)
@@ -138,7 +138,7 @@ func TestRotationAroundY(t *testing.T) {
 }
 
 func TestRotationAroundZ(t *testing.T) {
-	p := Point(0, 1, 0)
+	p := NewPoint(0, 1, 0)
 
 	halfQuarter := RotateZ(math.Pi / 4)
 	fullQuarter := RotateZ(math.Pi / 2)
@@ -158,7 +158,7 @@ func TestRotationAroundZ(t *testing.T) {
 
 func TestShearingXY(t *testing.T) {
 	transform := Shear(1, 0, 0, 0, 0, 0)
-	p := Point(2, 3, 4)
+	p := NewPoint(2, 3, 4)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -169,7 +169,7 @@ func TestShearingXY(t *testing.T) {
 
 func TestShearingXZ(t *testing.T) {
 	transform := Shear(0, 1, 0, 0, 0, 0)
-	p := Point(2, 3, 4)
+	p := NewPoint(2, 3, 4)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -180,7 +180,7 @@ func TestShearingXZ(t *testing.T) {
 
 func TestShearingYX(t *testing.T) {
 	transform := Shear(0, 0, 1, 0, 0, 0)
-	p := Point(2, 3, 4)
+	p := NewPoint(2, 3, 4)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -191,7 +191,7 @@ func TestShearingYX(t *testing.T) {
 
 func TestShearingYZ(t *testing.T) {
 	transform := Shear(0, 0, 0, 1, 0, 0)
-	p := Point(2, 3, 4)
+	p := NewPoint(2, 3, 4)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -202,7 +202,7 @@ func TestShearingYZ(t *testing.T) {
 
 func TestShearingZX(t *testing.T) {
 	transform := Shear(0, 0, 0, 0, 1, 0)
-	p := Point(2, 3, 4)
+	p := NewPoint(2, 3, 4)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -213,7 +213,7 @@ func TestShearingZX(t *testing.T) {
 
 func TestShearingZY(t *testing.T) {
 	transform := Shear(0, 0, 0, 0, 0, 1)
-	p := Point(2, 3, 4)
+	p := NewPoint(2, 3, 4)
 	result := MatrixTupleMultiply(transform, p)
 
 	assert.True(t, result.IsPoint())
@@ -223,28 +223,28 @@ func TestShearingZY(t *testing.T) {
 }
 
 func TestApplyingTransformationsInSequence(t *testing.T) {
-	p := Point(1, 0, 1)
+	p := NewPoint(1, 0, 1)
 	matA := RotateX(math.Pi / 2)
 	matB := Scale(5, 5, 5)
 	matC := Translate(10, 5, 7)
 
 	p2 := MatrixTupleMultiply(matA, p)
-	assert.True(t, p2.Equals(Point(1, -1, 0)))
+	assert.True(t, p2.Equals(NewPoint(1, -1, 0)))
 
 	p3 := MatrixTupleMultiply(matB, p2)
-	assert.True(t, p3.Equals(Point(5, -5, 0)))
+	assert.True(t, p3.Equals(NewPoint(5, -5, 0)))
 
 	p4 := MatrixTupleMultiply(matC, p3)
-	assert.True(t, p4.Equals(Point(15, 0, 7)))
+	assert.True(t, p4.Equals(NewPoint(15, 0, 7)))
 }
 
 func TestChainingTransformationsInReverseOrder(t *testing.T) {
-	p := Point(1, 0, 1)
+	p := NewPoint(1, 0, 1)
 	matA := RotateX(math.Pi / 2)
 	matB := Scale(5, 5, 5)
 	matC := Translate(10, 5, 7)
 	transform := MatrixMultiply(MatrixMultiply(matC, matB), matA)
 
 	result := MatrixTupleMultiply(transform, p)
-	assert.True(t, result.Equals(Point(15, 0, 7)))
+	assert.True(t, result.Equals(NewPoint(15, 0, 7)))
 }

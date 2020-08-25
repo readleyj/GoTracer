@@ -12,11 +12,11 @@ type Canvas struct {
 	Pixels []Color
 }
 
-func CreateCanvas(W, H int) *Canvas {
+func NewCanvas(W, H int) *Canvas {
 	pixels := make([]Color, W*H)
 
 	for i := range pixels {
-		pixels[i] = Color{0, 0, 0}
+		pixels[i] = NewColor(0, 0, 0)
 	}
 
 	return &Canvas{W: W, H: H, Pixels: pixels}

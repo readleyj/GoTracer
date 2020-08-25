@@ -15,13 +15,13 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func MakeSphere() *Sphere {
-	return &Sphere{rand.Int63(), MakeIdentity4()}
+func NewSphere() *Sphere {
+	return &Sphere{rand.Int63(), NewIdentity4()}
 }
 
 func Intersect(s *Sphere, ray Ray) Intersections {
 	r := TransformRay(ray, MatrixInverse(s.Transform))
-	sphereToRay := SubTuples(r.Origin, Point(0, 0, 0))
+	sphereToRay := SubTuples(r.Origin, NewPoint(0, 0, 0))
 
 	a := Dot(r.Direction, r.Direction)
 	b := 2 * Dot(r.Direction, sphereToRay)
@@ -33,9 +33,9 @@ func Intersect(s *Sphere, ray Ray) Intersections {
 	}
 
 	t1, t2 := (-b-math.Sqrt(discriminant))/(2*a), (-b+math.Sqrt(discriminant))/(2*a)
-	i1, i2 := MakeIntersection(t1, s), MakeIntersection(t2, s)
+	i1, i2 := NewIntersection(t1, s), NewIntersection(t2, s)
 
-	return MakeIntersections(i1, i2)
+	return NewIntersections(i1, i2)
 }
 
 func (s *Sphere) SetTransform(transform Matrix) {

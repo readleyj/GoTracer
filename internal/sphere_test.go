@@ -7,12 +7,12 @@ import (
 )
 
 func TestSphereDefaultTransform(t *testing.T) {
-	s := MakeSphere()
+	s := NewSphere()
 	assert.True(t, MatrixEquals(s.Transform, Identity4))
 }
 
 func TestSphereSetTransform(t *testing.T) {
-	s := MakeSphere()
+	s := NewSphere()
 	transform := Translate(2, 3, 4)
 	s.SetTransform(transform)
 	assert.True(t, MatrixEquals(s.Transform, transform))

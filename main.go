@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	rayOrigin := internal.Point(0.0, 0.0, -5.0)
+	rayOrigin := internal.NewPoint(0.0, 0.0, -5.0)
 	wallZ := 10.0
 
 	wallSize := 7.0
@@ -14,9 +14,9 @@ func main() {
 	pixelSize := wallSize / float64(canvasPixels)
 	half := wallSize / 2
 
-	canvas := internal.CreateCanvas(canvasPixels, canvasPixels)
+	canvas := internal.NewCanvas(canvasPixels, canvasPixels)
 	color := internal.Color{1, 0, 0}
-	shape := internal.MakeSphere()
+	shape := internal.NewSphere()
 
 	for y := 0; y < canvasPixels-1; y++ {
 		worldY := half - pixelSize*float64(y)
@@ -24,8 +24,8 @@ func main() {
 		for x := 0; x < canvasPixels-1; x++ {
 			worldX := -half + pixelSize*float64(x)
 
-			position := internal.Point(worldX, worldY, wallZ)
-			r := internal.Ray{rayOrigin, internal.SubTuples(position, rayOrigin).Normalize()}
+			position := internal.NewPoint(worldX, worldY, wallZ)
+			r := internal.NewRay(rayOrigin, internal.SubTuples(position, rayOrigin).Normalize())
 			xs := internal.Intersect(shape, r)
 			empty := internal.Intersection{}
 

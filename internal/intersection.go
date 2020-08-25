@@ -9,11 +9,11 @@ type Intersection struct {
 
 type Intersections []Intersection
 
-func MakeIntersection(T float64, object *Sphere) Intersection {
+func NewIntersection(T float64, object *Sphere) Intersection {
 	return Intersection{T, object}
 }
 
-func MakeIntersections(intersects ...Intersection) Intersections {
+func NewIntersections(intersects ...Intersection) Intersections {
 	results := make([]Intersection, len(intersects))
 	copy(results[:], intersects)
 	sort.Slice(results, func(i, j int) bool {

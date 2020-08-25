@@ -9,7 +9,7 @@ import (
 )
 
 func TestCanvasCreation(t *testing.T) {
-	canvas := CreateCanvas(10, 20)
+	canvas := NewCanvas(10, 20)
 
 	for _, pixel := range canvas.Pixels {
 		assert.InDelta(t, 0.0, pixel.R, float64EqualityThreshold)
@@ -19,8 +19,8 @@ func TestCanvasCreation(t *testing.T) {
 }
 
 func TestWritePixel(t *testing.T) {
-	canvas := CreateCanvas(10, 20)
-	red := Color{1, 0, 0}
+	canvas := NewCanvas(10, 20)
+	red := NewColor(1, 0, 0)
 
 	canvas.WritePixelAtCoord(2, 3, red)
 	pixel := canvas.Pixels[canvas.GetPixelIndex(2, 3)]
@@ -31,7 +31,7 @@ func TestWritePixel(t *testing.T) {
 }
 
 func TestPpmHeader(t *testing.T) {
-	canvas := CreateCanvas(5, 3)
+	canvas := NewCanvas(5, 3)
 
 	ppmString := canvas.ToPPM()
 	header := `P3
@@ -42,10 +42,10 @@ func TestPpmHeader(t *testing.T) {
 }
 
 func TestPpmPixels(t *testing.T) {
-	canvas := CreateCanvas(5, 3)
-	c1 := Color{1.5, 0, 0}
-	c2 := Color{0.0, 0.5, 0}
-	c3 := Color{-0.5, 0.0, 1.0}
+	canvas := NewCanvas(5, 3)
+	c1 := NewColor(1.5, 0, 0)
+	c2 := NewColor(0.0, 0.5, 0)
+	c3 := NewColor(-0.5, 0.0, 1.0)
 
 	canvas.WritePixelAtCoord(0, 0, c1)
 	canvas.WritePixelAtCoord(2, 1, c2)
@@ -61,8 +61,8 @@ func TestPpmPixels(t *testing.T) {
 }
 
 func TestPpmStringLength(t *testing.T) {
-	canvas := CreateCanvas(10, 2)
-	color := Color{1, 0.8, 0.6}
+	canvas := NewCanvas(10, 2)
+	color := NewColor(1, 0.8, 0.6)
 
 	for i := range canvas.Pixels {
 		canvas.WritePixelAtIndex(i, color)
@@ -79,7 +79,7 @@ func TestPpmStringLength(t *testing.T) {
 }
 
 func TestNewlineSuffix(t *testing.T) {
-	canvas := CreateCanvas(5, 3)
+	canvas := NewCanvas(5, 3)
 	ppmString := canvas.ToPPM()
 
 	fmt.Print(ppmString[len(ppmString)-1])

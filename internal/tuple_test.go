@@ -30,7 +30,7 @@ func TestTupleIsPoint(t *testing.T) {
 }
 
 func TestVectorIsTuple(t *testing.T) {
-	v := Vector(4, -4, 3)
+	v := NewVector(4, -4, 3)
 
 	assert.InDelta(t, 4, v.X, float64EqualityThreshold)
 	assert.InDelta(t, -4, v.Y, float64EqualityThreshold)
@@ -39,7 +39,7 @@ func TestVectorIsTuple(t *testing.T) {
 }
 
 func TestPointIsTuple(t *testing.T) {
-	p := Point(4, -4, 3)
+	p := NewPoint(4, -4, 3)
 
 	assert.InDelta(t, 4.0, p.X, float64EqualityThreshold)
 	assert.InDelta(t, -4.0, p.Y, float64EqualityThreshold)
@@ -59,8 +59,8 @@ func TestTupleAdd(t *testing.T) {
 }
 
 func TestTupleSub(t *testing.T) {
-	p1 := Point(3, 2, 1)
-	p2 := Point(5, 6, 7)
+	p1 := NewPoint(3, 2, 1)
+	p2 := NewPoint(5, 6, 7)
 	p3 := SubTuples(p1, p2)
 
 	assert.InDelta(t, -2.0, p3.X, float64EqualityThreshold)
@@ -70,8 +70,8 @@ func TestTupleSub(t *testing.T) {
 }
 
 func TestVectorSub(t *testing.T) {
-	v1 := Vector(3, 2, 1)
-	v2 := Vector(5, 6, 7)
+	v1 := NewVector(3, 2, 1)
+	v2 := NewVector(5, 6, 7)
 	v3 := SubTuples(v1, v2)
 
 	assert.InDelta(t, -2.0, v3.X, float64EqualityThreshold)
@@ -81,8 +81,8 @@ func TestVectorSub(t *testing.T) {
 }
 
 func TestSubVectorFromZero(t *testing.T) {
-	v1 := Vector(0, 0, 0)
-	v2 := Vector(1, -2, 3)
+	v1 := NewVector(0, 0, 0)
+	v2 := NewVector(1, -2, 3)
 	v3 := SubTuples(v1, v2)
 
 	assert.InDelta(t, -1.0, v3.X, float64EqualityThreshold)
@@ -136,11 +136,11 @@ func TestVectorMagnitude(t *testing.T) {
 		tuple  Tuple
 		target float64
 	}{
-		{Vector(1, 0, 0), 1.0},
-		{Vector(0, 1, 0), 1.0},
-		{Vector(0, 0, 1), 1.0},
-		{Vector(1, 2, 3), math.Sqrt(14)},
-		{Vector(-1, -2, -3), math.Sqrt(14)},
+		{NewVector(1, 0, 0), 1.0},
+		{NewVector(0, 1, 0), 1.0},
+		{NewVector(0, 0, 1), 1.0},
+		{NewVector(1, 2, 3), math.Sqrt(14)},
+		{NewVector(-1, -2, -3), math.Sqrt(14)},
 	}
 
 	for _, test := range testCases {
@@ -153,8 +153,8 @@ func TestNormalizedVectorMagnitude(t *testing.T) {
 		input  Tuple
 		target Tuple
 	}{
-		{Vector(4, 0, 0), Vector(1, 0, 0)},
-		{Vector(1, 2, 3), Vector(0.26726, 0.53452, 0.80178)},
+		{NewVector(4, 0, 0), NewVector(1, 0, 0)},
+		{NewVector(1, 2, 3), NewVector(0.26726, 0.53452, 0.80178)},
 	}
 
 	for _, test := range testCases {
@@ -168,18 +168,18 @@ func TestNormalizedVectorMagnitude(t *testing.T) {
 }
 
 func TestDotProduct(t *testing.T) {
-	v1 := Vector(1, 2, 3)
-	v2 := Vector(2, 3, 4)
+	v1 := NewVector(1, 2, 3)
+	v2 := NewVector(2, 3, 4)
 	result := Dot(v1, v2)
 	assert.InDelta(t, 20.0, result, float64EqualityThreshold)
 }
 
 func TestCrossProduct(t *testing.T) {
-	v1 := Vector(1, 2, 3)
-	v2 := Vector(2, 3, 4)
+	v1 := NewVector(1, 2, 3)
+	v2 := NewVector(2, 3, 4)
 
-	targetV12 := Vector(-1, 2, -1)
-	targetV21 := Vector(1, -2, 1)
+	targetV12 := NewVector(-1, 2, -1)
+	targetV21 := NewVector(1, -2, 1)
 
 	assert.True(t, TupleEquals(targetV12, Cross(v1, v2)))
 	assert.True(t, TupleEquals(targetV21, Cross(v2, v1)))
