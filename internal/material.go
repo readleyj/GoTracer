@@ -35,3 +35,7 @@ func NewMaterial(color Color, amb, dif, spec, shin float64) Material {
 		shin,
 	}
 }
+
+func (m *Material) SetColor(c Color) {
+	m.Color = c
+}
