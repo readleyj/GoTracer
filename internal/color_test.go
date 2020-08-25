@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewColor(t *testing.T) {
-	c := Color{-0.5, 0.4, 1.7}
+	c := NewColor(-0.5, 0.4, 1.7)
 
 	assert.InDelta(t, -0.5, c.R, float64EqualityThreshold)
 	assert.InDelta(t, 0.4, c.G, float64EqualityThreshold)
@@ -15,8 +15,8 @@ func TestNewColor(t *testing.T) {
 }
 
 func TestColorAdd(t *testing.T) {
-	c1 := Color{0.9, 0.6, 0.75}
-	c2 := Color{0.7, 0.1, 0.25}
+	c1 := NewColor(0.9, 0.6, 0.75)
+	c2 := NewColor(0.7, 0.1, 0.25)
 	c3 := AddColors(c1, c2)
 
 	assert.InDelta(t, 1.6, c3.R, float64EqualityThreshold)
@@ -25,8 +25,8 @@ func TestColorAdd(t *testing.T) {
 }
 
 func TestColorSub(t *testing.T) {
-	c1 := Color{0.9, 0.6, 0.75}
-	c2 := Color{0.7, 0.1, 0.25}
+	c1 := NewColor(0.9, 0.6, 0.75)
+	c2 := NewColor(0.7, 0.1, 0.25)
 	c3 := SubColors(c1, c2)
 
 	assert.InDelta(t, 0.2, c3.R, float64EqualityThreshold)
@@ -35,7 +35,7 @@ func TestColorSub(t *testing.T) {
 }
 
 func TestMultiplyColorByScalar(t *testing.T) {
-	c1 := Color{0.2, 0.3, 0.4}
+	c1 := NewColor(0.2, 0.3, 0.4)
 	c2 := ColorScalarMultiply(c1, 2.0)
 
 	assert.InDelta(t, 0.4, c2.R, float64EqualityThreshold)
@@ -44,8 +44,8 @@ func TestMultiplyColorByScalar(t *testing.T) {
 }
 
 func TestHadamardProduct(t *testing.T) {
-	c1 := Color{1.0, 0.2, 0.4}
-	c2 := Color{0.9, 1.0, 0.1}
+	c1 := NewColor(1.0, 0.2, 0.4)
+	c2 := NewColor(0.9, 1.0, 0.1)
 	c3 := HadamardProduct(c1, c2)
 
 	assert.InDelta(t, 0.9, c3.R, float64EqualityThreshold)
