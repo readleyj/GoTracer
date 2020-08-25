@@ -8,6 +8,7 @@ import (
 
 type Sphere struct {
 	ID        int64
+	Material  Material
 	Transform Matrix
 }
 
@@ -16,7 +17,11 @@ func init() {
 }
 
 func NewSphere() *Sphere {
-	return &Sphere{rand.Int63(), NewIdentity4()}
+	return &Sphere{
+		rand.Int63(),
+		NewDefaultMaterial(),
+		NewIdentity4(),
+	}
 }
 
 func Intersect(s *Sphere, ray Ray) Intersections {
@@ -40,4 +45,8 @@ func Intersect(s *Sphere, ray Ray) Intersections {
 
 func (s *Sphere) SetTransform(transform Matrix) {
 	s.Transform = transform
+}
+
+func (s *Sphere) SetMaterial(material Material) {
+	s.Material = material
 }
