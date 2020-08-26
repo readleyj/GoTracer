@@ -11,6 +11,10 @@ func NewPointLight(position Tuple, intensity Color) PointLight {
 	return PointLight{position, intensity}
 }
 
+func PointLightEquals(l1, l2 PointLight) bool {
+	return TupleEquals(l1.Position, l2.Position) && ColorEquals(l1.Intensity, l2.Intensity)
+}
+
 func Lighting(m Material, light PointLight, point, eyeV, normalV Tuple) Color {
 	var ambient, diffuse, specular Color
 
