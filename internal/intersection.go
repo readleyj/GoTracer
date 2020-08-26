@@ -34,3 +34,23 @@ func Hit(intersects Intersections) Intersection {
 
 	return result
 }
+
+func ShadeHit(w World, comps Computation) Color {
+	return Lighting(
+		comps.Object.Material, w.Light, comps.Point, comps.EyeV, comps.NormalV,
+	)
+}
+
+func ColorAt(w World, r Ray) Color {
+	intersections := IntersectWorld(w, r)
+	hit := Hit(intersections)
+	empty := Intersection{}
+
+	if hit == empty {
+		return NewColor(0, 0, 0)
+	}
+
+	comps := PrepareComputations(hit, r)
+
+	return ShadeHit(w, comps)
+}
