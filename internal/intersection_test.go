@@ -129,7 +129,7 @@ func TestShadeIntersection(t *testing.T) {
 
 func TestShadeIntersectionFromInside(t *testing.T) {
 	w := NewDefaultWorld()
-	w.Light = NewPointLight(NewPoint(0, 0.25, 0), NewColor(1, 1, 1))
+	w.Lights = []PointLight{NewPointLight(NewPoint(0, 0.25, 0), NewColor(1, 1, 1))}
 	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 0, 1))
 	shape := w.Objects[1]
 	i := NewIntersection(0.5, shape)

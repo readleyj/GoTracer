@@ -8,9 +8,8 @@ import (
 
 func TestCreatingWorld(t *testing.T) {
 	w := NewWorld()
-	emptyLight := PointLight{}
 
-	assert.True(t, w.Light == emptyLight)
+	assert.Equal(t, 0, len(w.Lights))
 	assert.Equal(t, 0, len(w.Objects))
 }
 
@@ -30,7 +29,7 @@ func TestDefaultWorld(t *testing.T) {
 	s2.SetTransform(Scale(0.5, 0.5, 0.5))
 
 	w := NewDefaultWorld()
-	assert.True(t, PointLightEquals(light, w.Light))
+	assert.True(t, PointLightEquals(light, w.Lights[0]))
 	assert.True(t, w.ContainsObject(s1))
 	assert.True(t, w.ContainsObject(s2))
 }

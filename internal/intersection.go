@@ -36,9 +36,16 @@ func Hit(intersects Intersections) Intersection {
 }
 
 func ShadeHit(w World, comps Computation) Color {
-	return Lighting(
-		comps.Object.Material, w.Light, comps.Point, comps.EyeV, comps.NormalV,
-	)
+	var finalColor Color
+
+	for _, light := range w.Lights {
+		finalColor = AddColors(
+			finalColor,
+			Lighting(comps.Object.Material, light, comps.Point, comps.EyeV, comps.NormalV),
+		)
+	}
+
+	return finalColor
 }
 
 func ColorAt(w World, r Ray) Color {
