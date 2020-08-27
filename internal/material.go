@@ -2,6 +2,7 @@ package internal
 
 type Material struct {
 	Color     Color
+	Pattern   Pattern
 	Ambient   float64
 	Diffuse   float64
 	Specular  float64
@@ -10,6 +11,7 @@ type Material struct {
 
 var DefaultMaterial = NewMaterial(
 	NewColor(1, 1, 1),
+	nil,
 	0.1,
 	0.9,
 	0.9,
@@ -19,6 +21,7 @@ var DefaultMaterial = NewMaterial(
 func NewDefaultMaterial() Material {
 	return Material{
 		DefaultMaterial.Color,
+		nil,
 		DefaultMaterial.Ambient,
 		DefaultMaterial.Diffuse,
 		DefaultMaterial.Specular,
@@ -26,9 +29,10 @@ func NewDefaultMaterial() Material {
 	}
 }
 
-func NewMaterial(color Color, amb, dif, spec, shin float64) Material {
+func NewMaterial(color Color, pattern Pattern, amb, dif, spec, shin float64) Material {
 	return Material{
 		color,
+		pattern,
 		amb,
 		dif,
 		spec,
@@ -45,4 +49,12 @@ func MaterialEquals(m1, m2 Material) bool {
 
 func (m *Material) SetColor(c Color) {
 	m.Color = c
+}
+
+func (m *Material) SetPattern(pattern *StripePattern) {
+	m.Pattern = pattern
+}
+
+func (m *Material) HasPattern() bool {
+	return m.Pattern != nil
 }

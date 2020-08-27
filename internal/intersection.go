@@ -43,7 +43,7 @@ func ShadeHit(w World, comps Computation) Color {
 	for _, light := range w.Lights {
 		finalColor = AddColors(
 			finalColor,
-			Lighting(comps.Object.GetMaterial(), light, comps.OverPoint, comps.EyeV, comps.NormalV, shadowed),
+			Lighting(comps.Object.GetMaterial(), comps.Object, light, comps.OverPoint, comps.EyeV, comps.NormalV, shadowed),
 		)
 	}
 

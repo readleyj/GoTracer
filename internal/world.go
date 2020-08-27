@@ -17,6 +17,7 @@ func NewDefaultWorld() World {
 	s1 := NewSphere()
 	s1.SetMaterial(NewMaterial(
 		NewColor(0.8, 1.0, 0.6),
+		DefaultMaterial.Pattern,
 		DefaultMaterial.Ambient,
 		0.7,
 		0.2,
