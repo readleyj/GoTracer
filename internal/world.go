@@ -2,7 +2,7 @@ package internal
 
 type World struct {
 	Lights  []PointLight
-	Objects []*Sphere
+	Objects []Shape
 }
 
 func NewWorld() World {
@@ -22,6 +22,7 @@ func NewDefaultWorld() World {
 		0.7,
 		0.2,
 		DefaultMaterial.Shininess,
+		DefaultMaterial.Reflective,
 	))
 
 	s2 := NewSphere()
@@ -29,7 +30,7 @@ func NewDefaultWorld() World {
 
 	return World{
 		lights,
-		[]*Sphere{
+		[]Shape{
 			s1,
 			s2,
 		},

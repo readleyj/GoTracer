@@ -24,6 +24,7 @@ func TestDefaultWorld(t *testing.T) {
 		0.7,
 		0.2,
 		DefaultMaterial.Shininess,
+		DefaultMaterial.Reflective,
 	))
 
 	s2 := NewSphere()

@@ -152,12 +152,19 @@ func TestColorWhenRayHits(t *testing.T) {
 
 func TestColorWithIntersectionBehindRay(t *testing.T) {
 	w := NewDefaultWorld()
+
 	outer := w.Objects[0]
-	outer.Material.Ambient = 1
+	outerMaterial := outer.GetMaterial()
+	outerMaterial.Ambient = 1
+	outer.SetMaterial(outerMaterial)
+
 	inner := w.Objects[1]
-	inner.Material.Ambient = 1
+	innerMaterial := inner.GetMaterial()
+	innerMaterial.Ambient = 1
+	inner.SetMaterial(innerMaterial)
+
 	r := NewRay(NewPoint(0, 0, 0.75), NewVector(0, 0, -1))
-	innerColor := inner.Material.Color
+	innerColor := inner.GetMaterial().Color
 	c := ColorAt(w, r)
 
 	assert.InDelta(t, innerColor.R, c.R, float64EqualityThreshold)
