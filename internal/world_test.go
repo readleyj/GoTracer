@@ -45,3 +45,31 @@ func TestIntersectWorldWithRay(t *testing.T) {
 	assert.InDelta(t, 5.5, xs[2].T, float64EqualityThreshold)
 	assert.InDelta(t, 6.0, xs[3].T, float64EqualityThreshold)
 }
+
+func TestNoShadowNothingColinearWithPointAndLight(t *testing.T) {
+	w := NewDefaultWorld()
+	p := NewPoint(0, 10, 0)
+
+	assert.False(t, IsShadowed(w, p))
+}
+
+func TestShadowObjectBetweenPointAndLight(t *testing.T) {
+	w := NewDefaultWorld()
+	p := NewPoint(10, -10, 10)
+
+	assert.True(t, IsShadowed(w, p))
+}
+
+func TestNoShadowObjectBehindLight(t *testing.T) {
+	w := NewDefaultWorld()
+	p := NewPoint(-20, 20, -20)
+
+	assert.False(t, IsShadowed(w, p))
+}
+
+func TestNoShadowObjectBehindPoint(t *testing.T) {
+	w := NewDefaultWorld()
+	p := NewPoint(-2, 2, -2)
+
+	assert.False(t, IsShadowed(w, p))
+}

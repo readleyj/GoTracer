@@ -129,7 +129,7 @@ func TestShadeIntersection(t *testing.T) {
 
 func TestShadeIntersectionFromInside(t *testing.T) {
 	w := NewDefaultWorld()
-	w.Lights = []PointLight{NewPointLight(NewPoint(0, 0.25, 0), NewColor(1, 1, 1))}
+	w.Lights[0] = NewPointLight(NewPoint(0, 0.25, 0), NewColor(1, 1, 1))
 	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 0, 1))
 	shape := w.Objects[1]
 	i := NewIntersection(0.5, shape)
@@ -174,4 +174,33 @@ func TestColorWithIntersectionBehindRay(t *testing.T) {
 	assert.InDelta(t, innerColor.R, c.R, float64EqualityThreshold)
 	assert.InDelta(t, innerColor.G, c.G, float64EqualityThreshold)
 	assert.InDelta(t, innerColor.B, c.B, float64EqualityThreshold)
+}
+
+func TestShadeHitGivenIntersectionInShadow(t *testing.T) {
+	w := NewWorld()
+	w.Lights = append(w.Lights, NewPointLight(NewPoint(0, 0, -10), NewColor(1, 1, 1)))
+	s1 := NewSphere()
+	w.Objects = append(w.Objects, s1)
+	s2 := NewSphere()
+	s2.SetTransform(Translate(0, 0, 10))
+	w.Objects = append(w.Objects, s2)
+	r := NewRay(NewPoint(0, 0, 5), NewVector(0, 0, 1))
+	i := NewIntersection(4, s2)
+	comps := PrepareComputations(i, r)
+	c := ShadeHit(w, comps)
+
+	assert.InDelta(t, 0.1, c.R, float64EqualityThreshold)
+	assert.InDelta(t, 0.1, c.G, float64EqualityThreshold)
+	assert.InDelta(t, 0.1, c.B, float64EqualityThreshold)
+}
+
+func TestHitShouldOffsetPoint(t *testing.T) {
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	shape := NewSphere()
+	shape.SetTransform(Translate(0, 0, 1))
+	i := NewIntersection(5, shape)
+	comps := PrepareComputations(i, r)
+
+	assert.Less(t, comps.OverPoint.Z, -float64EqualityThreshold/2)
+	assert.Greater(t, comps.Point.Z, comps.OverPoint.Z)
 }

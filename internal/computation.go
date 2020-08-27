@@ -1,12 +1,13 @@
 package internal
 
 type Computation struct {
-	T       float64
-	Object  *Sphere
-	Point   Tuple
-	EyeV    Tuple
-	NormalV Tuple
-	Inside  bool
+	T         float64
+	Object    *Sphere
+	Point     Tuple
+	OverPoint Tuple
+	EyeV      Tuple
+	NormalV   Tuple
+	Inside    bool
 }
 
 func NewComputation() Computation {
@@ -27,6 +28,8 @@ func PrepareComputations(intersection Intersection, ray Ray) Computation {
 	} else {
 		comps.Inside = false
 	}
+
+	comps.OverPoint = AddTuples(comps.Point, TupleScalarMultiply(comps.NormalV, float64EqualityThreshold))
 
 	return comps
 }

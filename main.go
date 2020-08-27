@@ -71,7 +71,7 @@ func RenderSphere() {
 				point := internal.Position(r, hit.T)
 				normal := internal.NormalAt(hit.Object, point)
 				eye := internal.Negate(r.Direction)
-				color := internal.Lighting(hit.Object.Material, light, point, eye, normal)
+				color := internal.Lighting(hit.Object.Material, light, point, eye, normal, false)
 
 				canvas.WritePixelAtCoord(x, y, color)
 			}

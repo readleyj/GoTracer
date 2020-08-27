@@ -38,10 +38,12 @@ func Hit(intersects Intersections) Intersection {
 func ShadeHit(w World, comps Computation) Color {
 	var finalColor Color
 
+	shadowed := IsShadowed(w, comps.OverPoint)
+
 	for _, light := range w.Lights {
 		finalColor = AddColors(
 			finalColor,
-			Lighting(comps.Object.Material, light, comps.Point, comps.EyeV, comps.NormalV),
+			Lighting(comps.Object.Material, light, comps.OverPoint, comps.EyeV, comps.NormalV, shadowed),
 		)
 	}
 

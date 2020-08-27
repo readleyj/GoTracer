@@ -15,7 +15,7 @@ func PointLightEquals(l1, l2 PointLight) bool {
 	return TupleEquals(l1.Position, l2.Position) && ColorEquals(l1.Intensity, l2.Intensity)
 }
 
-func Lighting(m Material, light PointLight, point, eyeV, normalV Tuple) Color {
+func Lighting(m Material, light PointLight, point, eyeV, normalV Tuple, inShadow bool) Color {
 	var ambient, diffuse, specular Color
 
 	effectiveColor := HadamardProduct(m.Color, light.Intensity)
@@ -24,7 +24,7 @@ func Lighting(m Material, light PointLight, point, eyeV, normalV Tuple) Color {
 
 	lightDotNormal := Dot(lightV, normalV)
 
-	if lightDotNormal < 0 {
+	if lightDotNormal < 0 || inShadow {
 		diffuse = NewColor(0, 0, 0)
 		specular = NewColor(0, 0, 0)
 	} else {
