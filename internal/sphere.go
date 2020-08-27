@@ -4,8 +4,6 @@ import (
 	"math"
 	"math/rand"
 	"time"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 type Sphere struct {
@@ -24,6 +22,10 @@ func NewSphere() *Sphere {
 		NewDefaultMaterial(),
 		NewIdentity4(),
 	}
+}
+
+func (s *Sphere) GetID() int64 {
+	return s.ID
 }
 
 func (s *Sphere) LocalIntersect(localRay Ray) Intersections {
@@ -45,10 +47,6 @@ func (s *Sphere) LocalIntersect(localRay Ray) Intersections {
 
 func (s *Sphere) LocalNormalAt(point Tuple) Tuple {
 	return SubTuples(point, NewPoint(0, 0, 0))
-}
-
-func SphereEquals(s1, s2 *Sphere) bool {
-	return cmp.Equal(s1.Material, s2.Material, opt) && MatrixEquals(s1.Transform, s2.Transform)
 }
 
 func (s *Sphere) GetTransform() Matrix {

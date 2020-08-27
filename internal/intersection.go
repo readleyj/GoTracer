@@ -4,12 +4,12 @@ import "sort"
 
 type Intersection struct {
 	T      float64
-	Object *Sphere
+	Object Shape
 }
 
 type Intersections []Intersection
 
-func NewIntersection(T float64, object *Sphere) Intersection {
+func NewIntersection(T float64, object Shape) Intersection {
 	return Intersection{T, object}
 }
 
@@ -43,7 +43,7 @@ func ShadeHit(w World, comps Computation) Color {
 	for _, light := range w.Lights {
 		finalColor = AddColors(
 			finalColor,
-			Lighting(comps.Object.Material, light, comps.OverPoint, comps.EyeV, comps.NormalV, shadowed),
+			Lighting(comps.Object.GetMaterial(), light, comps.OverPoint, comps.EyeV, comps.NormalV, shadowed),
 		)
 	}
 

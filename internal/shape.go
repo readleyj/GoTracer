@@ -1,6 +1,9 @@
 package internal
 
+import "github.com/google/go-cmp/cmp"
+
 type Shape interface {
+	GetID() int64
 	GetTransform() Matrix
 	SetTransform(t Matrix)
 
@@ -23,6 +26,10 @@ func NewTestShape() *TestShape {
 		NewIdentity4(),
 		Ray{},
 	}
+}
+
+func (t *TestShape) GetID() int64 {
+	return 0
 }
 
 func (t *TestShape) GetTransform() Matrix {
@@ -53,4 +60,8 @@ func (t *TestShape) LocalNormalAt(point Tuple) Tuple {
 func Intersect(s Shape, ray Ray) Intersections {
 	r := TransformRay(ray, MatrixInverse(s.GetTransform()))
 	return s.LocalIntersect(r)
+}
+
+func ShapeEquals(s1, s2 Shape) bool {
+	return cmp.Equal(s1.GetMaterial(), s2.GetMaterial(), opt) && MatrixEquals(s1.GetTransform(), s2.GetTransform())
 }

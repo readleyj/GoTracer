@@ -68,7 +68,7 @@ func IsShadowed(world World, point Tuple) bool {
 
 func (w World) ContainsObject(s *Sphere) bool {
 	for _, obj := range w.Objects {
-		if SphereEquals(obj, s) {
+		if ShapeEquals(obj, s) {
 			return true
 		}
 	}

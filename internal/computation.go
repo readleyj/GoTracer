@@ -2,7 +2,7 @@ package internal
 
 type Computation struct {
 	T         float64
-	Object    *Sphere
+	Object    Shape
 	Point     Tuple
 	OverPoint Tuple
 	EyeV      Tuple

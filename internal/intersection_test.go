@@ -12,7 +12,7 @@ func TestIntersectionEncapsulatesObjectAndT(t *testing.T) {
 	i := NewIntersection(3.5, s)
 
 	assert.InDelta(t, 3.5, i.T, float64EqualityThreshold)
-	assert.Equal(t, s.ID, (*i.Object).ID)
+	assert.Equal(t, s.ID, i.Object.GetID())
 }
 
 func TestAggregatingIntersections(t *testing.T) {
@@ -32,8 +32,8 @@ func TestIntersectSetsObjectOnIntersection(t *testing.T) {
 	xs := Intersect(s, r)
 
 	assert.Equal(t, 2, len(xs))
-	assert.Equal(t, s.ID, (*xs[0].Object).ID)
-	assert.Equal(t, s.ID, (*xs[1].Object).ID)
+	assert.Equal(t, s.ID, xs[0].Object.GetID())
+	assert.Equal(t, s.ID, xs[1].Object.GetID())
 }
 
 func TestHitWhenAllIntersectionsHavePositiveT(t *testing.T) {
@@ -44,7 +44,7 @@ func TestHitWhenAllIntersectionsHavePositiveT(t *testing.T) {
 	i := Hit(xs)
 
 	assert.InDelta(t, i1.T, i.T, float64EqualityThreshold)
-	assert.Equal(t, i1.Object.ID, i.Object.ID)
+	assert.Equal(t, i1.Object.GetID(), i.Object.GetID())
 }
 
 func TestHitWhenSomeIntersectionsHaveNegativeT(t *testing.T) {
@@ -55,7 +55,7 @@ func TestHitWhenSomeIntersectionsHaveNegativeT(t *testing.T) {
 	i := Hit(xs)
 
 	assert.InDelta(t, i2.T, i.T, float64EqualityThreshold)
-	assert.Equal(t, i2.Object.ID, i.Object.ID)
+	assert.Equal(t, i2.Object.GetID(), i.Object.GetID())
 }
 
 func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
@@ -79,7 +79,7 @@ func TestHitIsLowestNonnegativeIntersection(t *testing.T) {
 	i := Hit(xs)
 
 	assert.InDelta(t, i4.T, i.T, float64EqualityThreshold)
-	assert.Equal(t, i4.Object.ID, i.Object.ID)
+	assert.Equal(t, i4.Object.GetID(), i.Object.GetID())
 }
 
 func TestHitIntersectionOnOutside(t *testing.T) {
