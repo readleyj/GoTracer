@@ -36,6 +36,13 @@ func NewMaterial(color Color, amb, dif, spec, shin float64) Material {
 	}
 }
 
+func MaterialEquals(m1, m2 Material) bool {
+	return ColorEquals(m1.Color, m2.Color) && m1.Ambient == m2.Ambient &&
+		m1.Diffuse == m2.Diffuse &&
+		m1.Specular == m2.Specular &&
+		m1.Shininess == m2.Shininess
+}
+
 func (m *Material) SetColor(c Color) {
 	m.Color = c
 }
