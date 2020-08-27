@@ -82,17 +82,6 @@ func TestHitIsLowestNonnegativeIntersection(t *testing.T) {
 	assert.Equal(t, i4.Object.ID, i.Object.ID)
 }
 
-func TestIntersectScaledSphereWithRay(t *testing.T) {
-	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
-	s := NewSphere()
-	s.SetTransform(Scale(2, 2, 2))
-	xs := Intersect(s, r)
-
-	assert.Equal(t, 2, len(xs))
-	assert.InDelta(t, 3.0, xs[0].T, float64EqualityThreshold)
-	assert.InDelta(t, 7.0, xs[1].T, float64EqualityThreshold)
-}
-
 func TestHitIntersectionOnOutside(t *testing.T) {
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
 	shape := NewSphere()

@@ -1,10 +1,10 @@
 package internal
 
-func NormalAt(s *Sphere, worldPoint Tuple) Tuple {
-	inverseTransform := MatrixInverse(s.Transform)
-	objectPoint := MatrixTupleMultiply(inverseTransform, worldPoint)
-	objectNormal := SubTuples(objectPoint, NewPoint(0, 0, 0))
-	worldNormal := MatrixTupleMultiply(MatrixTranspose(inverseTransform), objectNormal)
+func NormalAt(s Shape, worldPoint Tuple) Tuple {
+	inverseTransform := MatrixInverse(s.GetTransform())
+	localPoint := MatrixTupleMultiply(inverseTransform, worldPoint)
+	localNormal := s.LocalNormalAt(localPoint)
+	worldNormal := MatrixTupleMultiply(MatrixTranspose(inverseTransform), localNormal)
 	worldNormal.W = 0
 
 	return Normalize(worldNormal)
