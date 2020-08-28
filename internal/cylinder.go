@@ -30,8 +30,8 @@ func NewCylinder() *Cylinder {
 	}
 }
 
-func (c *Cylinder) GetID() int64 {
-	return c.ID
+func (cyl *Cylinder) GetID() int64 {
+	return cyl.ID
 }
 
 func (cyl *Cylinder) LocalIntersect(ray Ray) Intersections {
@@ -65,32 +65,32 @@ func (cyl *Cylinder) LocalIntersect(ray Ray) Intersections {
 	return cyl.IntersectCaps(ray, xs)
 }
 
-func (c *Cylinder) LocalNormalAt(point Tuple) Tuple {
+func (cyl *Cylinder) LocalNormalAt(point Tuple) Tuple {
 	dist := point.X*point.X + point.Z*point.Z
 
-	if dist < 1 && point.Y >= c.Maximum-float64EqualityThreshold {
+	if dist < 1 && point.Y >= cyl.Maximum-float64EqualityThreshold {
 		return NewVector(0, 1, 0)
-	} else if dist < 1 && point.Y <= c.Minimum+float64EqualityThreshold {
+	} else if dist < 1 && point.Y <= cyl.Minimum+float64EqualityThreshold {
 		return NewVector(0, -1, 0)
 	}
 
 	return NewVector(point.X, 0, point.Z)
 }
 
-func (c *Cylinder) GetTransform() Matrix {
-	return c.Transform
+func (cyl *Cylinder) GetTransform() Matrix {
+	return cyl.Transform
 }
 
-func (c *Cylinder) SetTransform(transform Matrix) {
-	c.Transform = transform
+func (cyl *Cylinder) SetTransform(transform Matrix) {
+	cyl.Transform = transform
 }
 
-func (c *Cylinder) GetMaterial() Material {
-	return c.Material
+func (cyl *Cylinder) GetMaterial() Material {
+	return cyl.Material
 }
 
-func (c *Cylinder) SetMaterial(material Material) {
-	c.Material = material
+func (cyl *Cylinder) SetMaterial(material Material) {
+	cyl.Material = material
 }
 
 func (cyl *Cylinder) IntersectCaps(ray Ray, xs Intersections) Intersections {
