@@ -11,6 +11,8 @@ const (
 	RecursionDepth           = 5
 )
 
+var opt = cmpopts.EquateApprox(0, float64EqualityThreshold)
+
 func Includes(objects []Shape, target Shape) (int, bool) {
 	for index, obj := range objects {
 		if ShapesAreIdentical(obj, target) {
@@ -46,4 +48,9 @@ func CheckAxis(origin, direction float64) (float64, float64) {
 	return tMin, tMax
 }
 
-var opt = cmpopts.EquateApprox(0, float64EqualityThreshold)
+func CheckCap(r Ray, t float64) bool {
+	x := r.Origin.X + t*r.Direction.X
+	z := r.Origin.Z + t*r.Direction.Z
+
+	return (x*x + z*z) <= 1
+}
