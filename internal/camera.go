@@ -59,7 +59,7 @@ func Render(c Camera, w World) *Canvas {
 	for y := 0; y < c.Vsize-1; y++ {
 		for x := 0; x < c.Hsize-1; x++ {
 			ray := RayForPixel(c, x, y)
-			color := ColorAt(w, ray)
+			color := ColorAt(w, ray, RecursionDepth)
 			image.WritePixelAtCoord(x, y, color)
 		}
 	}

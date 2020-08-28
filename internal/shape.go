@@ -62,6 +62,10 @@ func Intersect(s Shape, ray Ray) Intersections {
 	return s.LocalIntersect(r)
 }
 
+func ShapesAreIdentical(s1, s2 Shape) bool {
+	return s1.GetID() == s2.GetID()
+}
+
 func ShapeEquals(s1, s2 Shape) bool {
 	return cmp.Equal(s1.GetMaterial(), s2.GetMaterial(), opt) && MatrixEquals(s1.GetTransform(), s2.GetTransform())
 }

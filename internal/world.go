@@ -23,6 +23,8 @@ func NewDefaultWorld() World {
 		0.2,
 		DefaultMaterial.Shininess,
 		DefaultMaterial.Reflective,
+		DefaultMaterial.Transparency,
+		DefaultMaterial.RefractiveIndex,
 	))
 
 	s2 := NewSphere()
@@ -68,7 +70,7 @@ func IsShadowed(world World, point Tuple) bool {
 	return h != empty && h.T < distance
 }
 
-func (w World) ContainsObject(s *Sphere) bool {
+func (w World) ContainsObject(s Shape) bool {
 	for _, obj := range w.Objects {
 		if ShapeEquals(obj, s) {
 			return true

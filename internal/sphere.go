@@ -24,6 +24,14 @@ func NewSphere() *Sphere {
 	}
 }
 
+func NewGlassSphere() *Sphere {
+	s := NewSphere()
+	s.Material.Transparency = 1.0
+	s.Material.RefractiveIndex = 1.5
+
+	return s
+}
+
 func (s *Sphere) GetID() int64 {
 	return s.ID
 }
