@@ -116,21 +116,14 @@ func (cone *Cone) IntersectCaps(ray Ray, xs Intersections) Intersections {
 	}
 
 	t = (cone.Minimum - ray.Origin.Y) / ray.Direction.Y
-	if cone.CheckCap(ray, t, cone.Minimum) {
+	if CheckCap(ray, t, cone.Minimum) {
 		xs = append(xs, NewIntersection(t, cone))
 	}
 
 	t = (cone.Maximum - ray.Origin.Y) / ray.Direction.Y
-	if cone.CheckCap(ray, t, cone.Maximum) {
+	if CheckCap(ray, t, cone.Maximum) {
 		xs = append(xs, NewIntersection(t, cone))
 	}
 
 	return xs
-}
-
-func (cone *Cone) CheckCap(r Ray, t float64, bound float64) bool {
-	x := r.Origin.X + t*r.Direction.X
-	z := r.Origin.Z + t*r.Direction.Z
-
-	return (x*x + z*z) <= math.Abs(bound)
 }

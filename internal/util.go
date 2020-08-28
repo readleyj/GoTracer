@@ -48,9 +48,9 @@ func CheckAxis(origin, direction float64) (float64, float64) {
 	return tMin, tMax
 }
 
-func CheckCap(r Ray, t float64) bool {
+func CheckCap(r Ray, t, boundary float64) bool {
 	x := r.Origin.X + t*r.Direction.X
 	z := r.Origin.Z + t*r.Direction.Z
 
-	return (x*x + z*z) <= 1
+	return (x*x + z*z) <= math.Abs(boundary)
 }

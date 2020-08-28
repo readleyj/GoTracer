@@ -101,12 +101,12 @@ func (cyl *Cylinder) IntersectCaps(ray Ray, xs Intersections) Intersections {
 	}
 
 	t = (cyl.Minimum - ray.Origin.Y) / ray.Direction.Y
-	if CheckCap(ray, t) {
+	if CheckCap(ray, t, 1) {
 		xs = append(xs, NewIntersection(t, cyl))
 	}
 
 	t = (cyl.Maximum - ray.Origin.Y) / ray.Direction.Y
-	if CheckCap(ray, t) {
+	if CheckCap(ray, t, 1) {
 		xs = append(xs, NewIntersection(t, cyl))
 	}
 
