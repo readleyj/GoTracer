@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"math"
+
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
@@ -21,6 +23,27 @@ func Includes(objects []Shape, target Shape) (int, bool) {
 
 func DeleteAtIndex(objects []Shape, index int) []Shape {
 	return append(objects[:index], objects[index+1:]...)
+}
+
+func CheckAxis(origin, direction float64) (float64, float64) {
+	var tMin, tMax float64
+
+	tMinNumerator := -origin - 1
+	tMaxNumerator := -origin + 1
+
+	if math.Abs(direction) >= float64EqualityThreshold {
+		tMin = tMinNumerator / direction
+		tMax = tMaxNumerator / direction
+	} else {
+		tMin = tMinNumerator * math.Inf(1)
+		tMax = tMaxNumerator * math.Inf(1)
+	}
+
+	if tMin > tMax {
+		tMin, tMax = tMax, tMin
+	}
+
+	return tMin, tMax
 }
 
 var opt = cmpopts.EquateApprox(0, float64EqualityThreshold)
