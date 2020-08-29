@@ -1,13 +1,10 @@
 package internal
 
 func NormalAt(s Shape, worldPoint Tuple) Tuple {
-	inverseTransform := MatrixInverse(s.GetTransform())
-	localPoint := MatrixTupleMultiply(inverseTransform, worldPoint)
+	localPoint := WorldToObject(s, worldPoint)
 	localNormal := s.LocalNormalAt(localPoint)
-	worldNormal := MatrixTupleMultiply(MatrixTranspose(inverseTransform), localNormal)
-	worldNormal.W = 0
 
-	return Normalize(worldNormal)
+	return NormalToWorld(s, localNormal)
 }
 
 func Reflect(in, normal Tuple) Tuple {

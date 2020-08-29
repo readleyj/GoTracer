@@ -10,6 +10,7 @@ type Sphere struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
+	Parent    *Group
 }
 
 func init() {
@@ -21,6 +22,7 @@ func NewSphere() *Sphere {
 		rand.Int63(),
 		NewDefaultMaterial(),
 		NewIdentity4(),
+		nil,
 	}
 }
 
@@ -71,4 +73,12 @@ func (s *Sphere) GetMaterial() Material {
 
 func (s *Sphere) SetMaterial(material Material) {
 	s.Material = material
+}
+
+func (s *Sphere) GetParent() *Group {
+	return s.Parent
+}
+
+func (s *Sphere) SetParent(g *Group) {
+	s.Parent = g
 }

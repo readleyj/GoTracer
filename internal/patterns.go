@@ -12,7 +12,7 @@ type Pattern interface {
 }
 
 func PatternAtShape(pattern Pattern, shape Shape, worldPoint Tuple) Color {
-	objectPoint := MatrixTupleMultiply(MatrixInverse(shape.GetTransform()), worldPoint)
+	objectPoint := WorldToObject(shape, worldPoint)
 	patternPoint := MatrixTupleMultiply(MatrixInverse(pattern.GetTransform()), objectPoint)
 
 	return pattern.PatternAt(patternPoint)

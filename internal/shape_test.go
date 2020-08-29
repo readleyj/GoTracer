@@ -84,8 +84,8 @@ func TestComputeNormal(t *testing.T) {
 	assert.InDelta(t, -0.24254, n.Z, float64EqualityThreshold)
 }
 
-// assert.True(t, ColorEquals(m.Color, shapeMat.Color))
-// assert.InDelta(t, m.Ambient, shapeMat.Ambient, float64EqualityThreshold)
-// assert.InDelta(t, m.Diffuse, shapeMat.Diffuse, float64EqualityThreshold)
-// assert.InDelta(t, m.Specular, shapeMat.Specular, float64EqualityThreshold)
-// assert.InDelta(t, m.Shininess, shapeMat.Shininess, float64EqualityThreshold)
+func TestShapeHasParentAttribute(t *testing.T) {
+	s := NewTestShape()
+
+	assert.Nil(t, s.Parent)
+}

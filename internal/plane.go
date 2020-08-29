@@ -10,6 +10,7 @@ type Plane struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
+	Parent    *Group
 }
 
 func init() {
@@ -21,6 +22,7 @@ func NewPlane() *Plane {
 		rand.Int63(),
 		NewDefaultMaterial(),
 		NewIdentity4(),
+		nil,
 	}
 }
 
@@ -55,4 +57,12 @@ func (p *Plane) GetMaterial() Material {
 
 func (p *Plane) SetMaterial(material Material) {
 	p.Material = material
+}
+
+func (p *Plane) GetParent() *Group {
+	return p.Parent
+}
+
+func (p *Plane) SetParent(g *Group) {
+	p.Parent = g
 }

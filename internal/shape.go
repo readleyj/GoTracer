@@ -10,6 +10,9 @@ type Shape interface {
 	GetMaterial() Material
 	SetMaterial(m Material)
 
+	GetParent() *Group
+	SetParent(g *Group)
+
 	LocalIntersect(localRay Ray) Intersections
 	LocalNormalAt(point Tuple) Tuple
 }
@@ -17,6 +20,7 @@ type Shape interface {
 type TestShape struct {
 	Material  Material
 	Transform Matrix
+	Parent    *Group
 	SavedRay  Ray
 }
 
@@ -24,6 +28,7 @@ func NewTestShape() *TestShape {
 	return &TestShape{
 		NewDefaultMaterial(),
 		NewIdentity4(),
+		nil,
 		Ray{},
 	}
 }
@@ -57,6 +62,14 @@ func (t *TestShape) LocalNormalAt(point Tuple) Tuple {
 	return NewVector(point.X, point.Y, point.Z)
 }
 
+func (t *TestShape) GetParent() *Group {
+	return t.Parent
+}
+
+func (t *TestShape) SetParent(g *Group) {
+	t.Parent = g
+}
+
 func Intersect(s Shape, ray Ray) Intersections {
 	r := TransformRay(ray, MatrixInverse(s.GetTransform()))
 	return s.LocalIntersect(r)
@@ -68,4 +81,28 @@ func ShapesAreIdentical(s1, s2 Shape) bool {
 
 func ShapeEquals(s1, s2 Shape) bool {
 	return cmp.Equal(s1.GetMaterial(), s2.GetMaterial(), opt) && MatrixEquals(s1.GetTransform(), s2.GetTransform())
+}
+
+func ShapeHasParent(s Shape) bool {
+	return s.GetParent() != nil
+}
+
+func WorldToObject(s Shape, point Tuple) Tuple {
+	if ShapeHasParent(s) {
+		point = WorldToObject(s.GetParent(), point)
+	}
+
+	return MatrixTupleMultiply(MatrixInverse(s.GetTransform()), point)
+}
+
+func NormalToWorld(s Shape, normal Tuple) Tuple {
+	normal = MatrixTupleMultiply(MatrixTranspose(MatrixInverse(s.GetTransform())), normal)
+	normal.W = 0
+	normal = Normalize(normal)
+
+	if ShapeHasParent(s) {
+		normal = NormalToWorld(s.GetParent(), normal)
+	}
+
+	return normal
 }

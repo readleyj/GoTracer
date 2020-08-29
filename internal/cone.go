@@ -10,6 +10,7 @@ type Cone struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
+	Parent    *Group
 	Minimum   float64
 	Maximum   float64
 	Closed    bool
@@ -24,6 +25,7 @@ func NewCone() *Cone {
 		rand.Int63(),
 		NewDefaultMaterial(),
 		NewIdentity4(),
+		nil,
 		math.Inf(-1),
 		math.Inf(1),
 		false,
@@ -126,4 +128,12 @@ func (cone *Cone) IntersectCaps(ray Ray, xs Intersections) Intersections {
 	}
 
 	return xs
+}
+
+func (cone *Cone) GetParent() *Group {
+	return cone.Parent
+}
+
+func (cone *Cone) SetParent(g *Group) {
+	cone.Parent = g
 }

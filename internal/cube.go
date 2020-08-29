@@ -10,6 +10,7 @@ type Cube struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
+	Parent    *Group
 }
 
 func init() {
@@ -21,6 +22,7 @@ func NewCube() *Cube {
 		rand.Int63(),
 		NewDefaultMaterial(),
 		NewIdentity4(),
+		nil,
 	}
 }
 
@@ -73,4 +75,12 @@ func (c *Cube) GetMaterial() Material {
 
 func (c *Cube) SetMaterial(material Material) {
 	c.Material = material
+}
+
+func (c *Cube) GetParent() *Group {
+	return c.Parent
+}
+
+func (c *Cube) SetParent(g *Group) {
+	c.Parent = g
 }
