@@ -7,13 +7,19 @@ import (
 
 type Intersection struct {
 	T      float64
+	U      float64
+	V      float64
 	Object Shape
 }
 
 type Intersections []Intersection
 
 func NewIntersection(T float64, object Shape) Intersection {
-	return Intersection{T, object}
+	return Intersection{T, 0, 0, object}
+}
+
+func NewIntersectionUV(T float64, object Shape, U, V float64) Intersection {
+	return Intersection{T, U, V, object}
 }
 
 func IntersectEquals(i1, i2 Intersection) bool {

@@ -39,7 +39,7 @@ func (p *Plane) LocalIntersect(localRay Ray) Intersections {
 	return NewIntersections(NewIntersection(t, p))
 }
 
-func (p *Plane) LocalNormalAt(point Tuple) Tuple {
+func (p *Plane) LocalNormalAt(point Tuple, hit Intersection) Tuple {
 	return NewVector(0, 1, 0)
 }
 

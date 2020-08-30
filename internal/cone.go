@@ -76,7 +76,7 @@ func (cone *Cone) LocalIntersect(ray Ray) Intersections {
 	return cone.IntersectCaps(ray, xs)
 }
 
-func (cone *Cone) LocalNormalAt(point Tuple) Tuple {
+func (cone *Cone) LocalNormalAt(point Tuple, i Intersection) Tuple {
 	dist := point.X*point.X + point.Z*point.Z
 
 	if dist < 1 && point.Y >= cone.Maximum-float64EqualityThreshold {

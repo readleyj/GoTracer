@@ -69,7 +69,7 @@ func RenderSphere() {
 
 			if hit := internal.Hit(xs); hit != empty {
 				point := internal.Position(r, hit.T)
-				normal := internal.NormalAt(hit.Object, point)
+				normal := internal.NormalAt(hit.Object, point, internal.Intersection{})
 				eye := internal.Negate(r.Direction)
 				color := internal.Lighting(hit.Object.GetMaterial(), internal.NewSphere(), light, point, eye, normal, false)
 

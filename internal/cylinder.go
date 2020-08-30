@@ -67,7 +67,7 @@ func (cyl *Cylinder) LocalIntersect(ray Ray) Intersections {
 	return cyl.IntersectCaps(ray, xs)
 }
 
-func (cyl *Cylinder) LocalNormalAt(point Tuple) Tuple {
+func (cyl *Cylinder) LocalNormalAt(point Tuple, hit Intersection) Tuple {
 	dist := point.X*point.X + point.Z*point.Z
 
 	if dist < 1 && point.Y >= cyl.Maximum-float64EqualityThreshold {

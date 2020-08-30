@@ -64,7 +64,7 @@ func TestIntersectTranslatedShapeWithRay(t *testing.T) {
 func TestComputeNormalOnTranslatedShape(t *testing.T) {
 	s := NewTestShape()
 	s.SetTransform(Translate(0, 1, 0))
-	n := NormalAt(s, NewPoint(0, 1.70711, -0.70711))
+	n := NormalAt(s, NewPoint(0, 1.70711, -0.70711), Intersection{})
 
 	assert.True(t, n.IsVector())
 	assert.InDelta(t, 0.0, n.X, float64EqualityThreshold)
@@ -76,7 +76,7 @@ func TestComputeNormal(t *testing.T) {
 	s := NewTestShape()
 	m := MatrixMultiply(Scale(1, 0.5, 1), RotateZ(math.Pi/5))
 	s.SetTransform(m)
-	n := NormalAt(s, NewPoint(0, math.Pi/2, -math.Pi/2))
+	n := NormalAt(s, NewPoint(0, math.Pi/2, -math.Pi/2), Intersection{})
 
 	assert.True(t, n.IsVector())
 	assert.InDelta(t, 0.0, n.X, float64EqualityThreshold)

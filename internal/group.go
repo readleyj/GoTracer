@@ -47,7 +47,7 @@ func (group *Group) LocalIntersect(ray Ray) Intersections {
 	return intersects
 }
 
-func (group *Group) LocalNormalAt(point Tuple) Tuple {
+func (group *Group) LocalNormalAt(point Tuple, hit Intersection) Tuple {
 	return Tuple{}
 }
 

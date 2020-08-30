@@ -495,3 +495,11 @@ func TestShadeHitWithReflectiveTransparentMaterial(t *testing.T) {
 
 	assert.True(t, ColorEquals(NewColor(0.93391, 0.69643, 0.69243), color))
 }
+
+func TestIntersectionEncapsulatesUV(t *testing.T) {
+	s := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
+	i := NewIntersectionUV(3.5, s, 0.2, 0.4)
+
+	assert.InDelta(t, 0.2, i.U, float64EqualityThreshold)
+	assert.InDelta(t, 0.4, i.V, float64EqualityThreshold)
+}

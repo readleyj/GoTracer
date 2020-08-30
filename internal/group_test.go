@@ -117,7 +117,7 @@ func TestNormalOnChildObject(t *testing.T) {
 	s.SetTransform(Translate(5, 0, 0))
 	g2.AddChild(s)
 
-	n := NormalAt(s, NewPoint(1.7321, 1.1547, -5.5774))
+	n := NormalAt(s, NewPoint(1.7321, 1.1547, -5.5774), Intersection{})
 
 	assert.True(t, TupleEquals(NewVector(0.2857, 0.4286, -0.8571), n))
 }

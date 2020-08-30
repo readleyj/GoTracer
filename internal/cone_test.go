@@ -81,7 +81,7 @@ func TestNormalOnCone(t *testing.T) {
 	cone := NewCone()
 
 	for _, test := range testCases {
-		n := cone.LocalNormalAt(test.point)
+		n := cone.LocalNormalAt(test.point, Intersection{})
 
 		assert.True(t, TupleEquals(test.normal, n))
 	}

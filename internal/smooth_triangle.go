@@ -6,12 +6,13 @@ import (
 	"time"
 )
 
-type Triangle struct {
+type SmoothTriangle struct {
 	ID         int64
 	Material   Material
 	Transform  Matrix
 	Parent     *Group
 	P1, P2, P3 Tuple
+	N1, N2, N3 Tuple
 	E1, E2     Tuple
 	Normal     Tuple
 }
@@ -20,10 +21,10 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func NewTriangle(p1, p2, p3 Tuple) *Triangle {
+func NewSmoothTriangle(p1, p2, p3, n1, n2, n3 Tuple) *SmoothTriangle {
 	e1, e2 := SubTuples(p2, p1), SubTuples(p3, p1)
 
-	return &Triangle{
+	return &SmoothTriangle{
 		rand.Int63(),
 		NewDefaultMaterial(),
 		NewIdentity4(),
@@ -31,17 +32,20 @@ func NewTriangle(p1, p2, p3 Tuple) *Triangle {
 		p1,
 		p2,
 		p3,
+		n1,
+		n2,
+		n3,
 		e1,
 		e2,
 		Normalize(Cross(e2, e1)),
 	}
 }
 
-func (tri *Triangle) GetID() int64 {
+func (tri *SmoothTriangle) GetID() int64 {
 	return tri.ID
 }
 
-func (tri *Triangle) LocalIntersect(localRay Ray) Intersections {
+func (tri *SmoothTriangle) LocalIntersect(localRay Ray) Intersections {
 	dirCrossE2 := Cross(localRay.Direction, tri.E2)
 	det := Dot(tri.E1, dirCrossE2)
 
@@ -66,33 +70,39 @@ func (tri *Triangle) LocalIntersect(localRay Ray) Intersections {
 	}
 
 	t := f * Dot(tri.E2, originCrossE1)
-	return NewIntersections(NewIntersection(t, tri))
+	return NewIntersections(NewIntersectionUV(t, tri, u, v))
 }
 
-func (tri *Triangle) LocalNormalAt(point Tuple, hit Intersection) Tuple {
-	return tri.Normal
+func (tri *SmoothTriangle) LocalNormalAt(point Tuple, hit Intersection) Tuple {
+	return AddTuples(
+		AddTuples(
+			TupleScalarMultiply(tri.N2, hit.U),
+			TupleScalarMultiply(tri.N3, hit.V),
+		),
+		TupleScalarMultiply(tri.N1, (1-hit.U-hit.V)),
+	)
 }
 
-func (tri *Triangle) GetTransform() Matrix {
+func (tri *SmoothTriangle) GetTransform() Matrix {
 	return tri.Transform
 }
 
-func (tri *Triangle) SetTransform(transform Matrix) {
+func (tri *SmoothTriangle) SetTransform(transform Matrix) {
 	tri.Transform = transform
 }
 
-func (tri *Triangle) GetMaterial() Material {
+func (tri *SmoothTriangle) GetMaterial() Material {
 	return tri.Material
 }
 
-func (tri *Triangle) SetMaterial(material Material) {
+func (tri *SmoothTriangle) SetMaterial(material Material) {
 	tri.Material = material
 }
 
-func (tri *Triangle) GetParent() *Group {
+func (tri *SmoothTriangle) GetParent() *Group {
 	return tri.Parent
 }
 
-func (tri *Triangle) SetParent(g *Group) {
+func (tri *SmoothTriangle) SetParent(g *Group) {
 	tri.Parent = g
 }

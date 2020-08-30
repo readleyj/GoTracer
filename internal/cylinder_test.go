@@ -67,7 +67,7 @@ func TestNormalOnCylinder(t *testing.T) {
 	cyl := NewCylinder()
 
 	for _, test := range testCases {
-		n := cyl.LocalNormalAt(test.point)
+		n := cyl.LocalNormalAt(test.point, Intersection{})
 
 		assert.True(t, TupleEquals(test.normal, n))
 	}
@@ -160,7 +160,7 @@ func TestCylinderNormalOnEndCaps(t *testing.T) {
 	cyl.Closed = true
 
 	for _, test := range testCases {
-		n := cyl.LocalNormalAt(test.point)
+		n := cyl.LocalNormalAt(test.point, Intersection{})
 
 		assert.True(t, TupleEquals(test.normal, n))
 	}

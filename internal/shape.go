@@ -14,7 +14,7 @@ type Shape interface {
 	SetParent(g *Group)
 
 	LocalIntersect(localRay Ray) Intersections
-	LocalNormalAt(point Tuple) Tuple
+	LocalNormalAt(point Tuple, i Intersection) Tuple
 }
 
 type TestShape struct {
@@ -58,7 +58,7 @@ func (t *TestShape) LocalIntersect(localRay Ray) Intersections {
 	return Intersections{}
 }
 
-func (t *TestShape) LocalNormalAt(point Tuple) Tuple {
+func (t *TestShape) LocalNormalAt(point Tuple, hit Intersection) Tuple {
 	return NewVector(point.X, point.Y, point.Z)
 }
 

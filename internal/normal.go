@@ -1,8 +1,8 @@
 package internal
 
-func NormalAt(s Shape, worldPoint Tuple) Tuple {
+func NormalAt(s Shape, worldPoint Tuple, hit Intersection) Tuple {
 	localPoint := WorldToObject(s, worldPoint)
-	localNormal := s.LocalNormalAt(localPoint)
+	localNormal := s.LocalNormalAt(localPoint, hit)
 
 	return NormalToWorld(s, localNormal)
 }

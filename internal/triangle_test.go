@@ -23,9 +23,9 @@ func TestCreateTriangle(t *testing.T) {
 func TestFindNormalOnTriangle(t *testing.T) {
 	tri := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
 
-	n1 := tri.LocalNormalAt(NewPoint(0, 0.5, 0))
-	n2 := tri.LocalNormalAt(NewPoint(-0.5, 0.75, 0))
-	n3 := tri.LocalNormalAt(NewPoint(0.5, 0.25, 0))
+	n1 := tri.LocalNormalAt(NewPoint(0, 0.5, 0), Intersection{})
+	n2 := tri.LocalNormalAt(NewPoint(-0.5, 0.75, 0), Intersection{})
+	n3 := tri.LocalNormalAt(NewPoint(0.5, 0.25, 0), Intersection{})
 
 	assert.True(t, TupleEquals(n1, tri.Normal))
 	assert.True(t, TupleEquals(n2, tri.Normal))

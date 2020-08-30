@@ -77,7 +77,7 @@ func TestNormalOnCubeSurface(t *testing.T) {
 
 	for _, test := range testCases {
 		p := test.point
-		normal := c.LocalNormalAt(p)
+		normal := c.LocalNormalAt(p, Intersection{})
 
 		assert.True(t, TupleEquals(test.normal, normal))
 	}

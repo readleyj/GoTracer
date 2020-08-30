@@ -8,9 +8,9 @@ import (
 
 func TestPlaneNormalIsConstantEverywhere(t *testing.T) {
 	p := NewPlane()
-	n1 := p.LocalNormalAt(NewPoint(0, 0, 0))
-	n2 := p.LocalNormalAt(NewPoint(10, 0, -10))
-	n3 := p.LocalNormalAt(NewPoint(-5, 0, 150))
+	n1 := p.LocalNormalAt(NewPoint(0, 0, 0), Intersection{})
+	n2 := p.LocalNormalAt(NewPoint(10, 0, -10), Intersection{})
+	n3 := p.LocalNormalAt(NewPoint(-5, 0, 150), Intersection{})
 
 	assert.True(t, TupleEquals(NewVector(0, 1, 0), n1))
 	assert.True(t, TupleEquals(NewVector(0, 1, 0), n2))

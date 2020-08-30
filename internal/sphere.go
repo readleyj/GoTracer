@@ -55,7 +55,7 @@ func (s *Sphere) LocalIntersect(localRay Ray) Intersections {
 	return NewIntersections(i1, i2)
 }
 
-func (s *Sphere) LocalNormalAt(point Tuple) Tuple {
+func (s *Sphere) LocalNormalAt(point Tuple, hit Intersection) Tuple {
 	return SubTuples(point, NewPoint(0, 0, 0))
 }
 

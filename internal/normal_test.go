@@ -9,7 +9,7 @@ import (
 
 func TestNormalOnSphereAtAxisX(t *testing.T) {
 	s := NewSphere()
-	n := NormalAt(s, NewPoint(1, 0, 0))
+	n := NormalAt(s, NewPoint(1, 0, 0), Intersection{})
 
 	assert.True(t, n.IsVector())
 	assert.InDelta(t, 1.0, n.X, float64EqualityThreshold)
@@ -19,7 +19,7 @@ func TestNormalOnSphereAtAxisX(t *testing.T) {
 
 func TestNormalOnSphereAtAxisY(t *testing.T) {
 	s := NewSphere()
-	n := NormalAt(s, NewPoint(0, 1, 0))
+	n := NormalAt(s, NewPoint(0, 1, 0), Intersection{})
 
 	assert.True(t, n.IsVector())
 	assert.InDelta(t, 0.0, n.X, float64EqualityThreshold)
@@ -29,7 +29,7 @@ func TestNormalOnSphereAtAxisY(t *testing.T) {
 
 func TestNormalOnSphereAtAxisZ(t *testing.T) {
 	s := NewSphere()
-	n := NormalAt(s, NewPoint(0, 0, 1))
+	n := NormalAt(s, NewPoint(0, 0, 1), Intersection{})
 
 	assert.True(t, n.IsVector())
 	assert.InDelta(t, 0.0, n.X, float64EqualityThreshold)
@@ -39,7 +39,7 @@ func TestNormalOnSphereAtAxisZ(t *testing.T) {
 
 func TestNormalOnSphereAtNonaxicalPoint(t *testing.T) {
 	s := NewSphere()
-	n := NormalAt(s, NewPoint(1/math.Sqrt(3), 1/math.Sqrt(3), 1/math.Sqrt(3)))
+	n := NormalAt(s, NewPoint(1/math.Sqrt(3), 1/math.Sqrt(3), 1/math.Sqrt(3)), Intersection{})
 
 	assert.True(t, n.IsVector())
 	assert.InDelta(t, 1/math.Sqrt(3), n.X, float64EqualityThreshold)
@@ -49,7 +49,7 @@ func TestNormalOnSphereAtNonaxicalPoint(t *testing.T) {
 
 func TestNormalIsNormalizedVector(t *testing.T) {
 	s := NewSphere()
-	n := NormalAt(s, NewPoint(1/math.Sqrt(3), 1/math.Sqrt(3), 1/math.Sqrt(3)))
+	n := NormalAt(s, NewPoint(1/math.Sqrt(3), 1/math.Sqrt(3), 1/math.Sqrt(3)), Intersection{})
 	normalized := Normalize(n)
 
 	assert.True(t, TupleEquals(normalized, n))
@@ -58,7 +58,7 @@ func TestNormalIsNormalizedVector(t *testing.T) {
 func TestComputeNormalOnTranslatedSphere(t *testing.T) {
 	s := NewSphere()
 	s.SetTransform(Translate(0, 1, 0))
-	n := NormalAt(s, NewPoint(0, 1.70711, -0.70711))
+	n := NormalAt(s, NewPoint(0, 1.70711, -0.70711), Intersection{})
 
 	assert.True(t, n.IsVector())
 	assert.InDelta(t, 0.0, n.X, float64EqualityThreshold)
@@ -70,7 +70,7 @@ func TestComputeNormalOnTransformedSphere(t *testing.T) {
 	s := NewSphere()
 	m := MatrixMultiply(Scale(1, 0.5, 1), RotateZ(math.Pi/5))
 	s.SetTransform(m)
-	n := NormalAt(s, NewPoint(0, 1/math.Sqrt(2), -1/math.Sqrt(2)))
+	n := NormalAt(s, NewPoint(0, 1/math.Sqrt(2), -1/math.Sqrt(2)), Intersection{})
 
 	assert.True(t, n.IsVector())
 	assert.InDelta(t, 0.0, n.X, float64EqualityThreshold)

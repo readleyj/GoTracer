@@ -48,7 +48,7 @@ func (c *Cube) LocalIntersect(localRay Ray) Intersections {
 	return NewIntersections(i1, i2)
 }
 
-func (c *Cube) LocalNormalAt(point Tuple) Tuple {
+func (c *Cube) LocalNormalAt(point Tuple, hit Intersection) Tuple {
 	xAbs, yAbs, zAbs := math.Abs(point.X), math.Abs(point.Y), math.Abs(point.Z)
 	maxC := math.Max(math.Max(xAbs, yAbs), zAbs)
 

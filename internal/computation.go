@@ -24,7 +24,7 @@ func PrepareComputations(intersection Intersection, ray Ray, xs Intersections) C
 	comps.Object = intersection.Object
 	comps.Point = Position(ray, comps.T)
 	comps.EyeV = Negate(ray.Direction)
-	comps.NormalV = NormalAt(comps.Object, comps.Point)
+	comps.NormalV = NormalAt(comps.Object, comps.Point, intersection)
 	comps.ReflectV = Reflect(ray.Direction, comps.NormalV)
 
 	if Dot(comps.NormalV, comps.EyeV) < 0 {
