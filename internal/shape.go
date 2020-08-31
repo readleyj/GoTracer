@@ -10,8 +10,8 @@ type Shape interface {
 	GetMaterial() Material
 	SetMaterial(m Material)
 
-	GetParent() *Group
-	SetParent(g *Group)
+	GetParent() Shape
+	SetParent(s Shape)
 
 	LocalIntersect(localRay Ray) Intersections
 	LocalNormalAt(point Tuple, i Intersection) Tuple
@@ -20,7 +20,7 @@ type Shape interface {
 type TestShape struct {
 	Material  Material
 	Transform Matrix
-	Parent    *Group
+	Parent    Shape
 	SavedRay  Ray
 }
 
@@ -62,12 +62,12 @@ func (t *TestShape) LocalNormalAt(point Tuple, hit Intersection) Tuple {
 	return NewVector(point.X, point.Y, point.Z)
 }
 
-func (t *TestShape) GetParent() *Group {
+func (t *TestShape) GetParent() Shape {
 	return t.Parent
 }
 
-func (t *TestShape) SetParent(g *Group) {
-	t.Parent = g
+func (t *TestShape) SetParent(s Shape) {
+	t.Parent = s
 }
 
 func Intersect(s Shape, ray Ray) Intersections {

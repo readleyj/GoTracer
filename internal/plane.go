@@ -10,7 +10,7 @@ type Plane struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
-	Parent    *Group
+	Parent    Shape
 }
 
 func init() {
@@ -59,10 +59,10 @@ func (p *Plane) SetMaterial(material Material) {
 	p.Material = material
 }
 
-func (p *Plane) GetParent() *Group {
+func (p *Plane) GetParent() Shape {
 	return p.Parent
 }
 
-func (p *Plane) SetParent(g *Group) {
-	p.Parent = g
+func (p *Plane) SetParent(s Shape) {
+	p.Parent = s
 }

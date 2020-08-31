@@ -10,7 +10,7 @@ type Group struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
-	Parent    *Group
+	Parent    Shape
 	Children  []Shape
 }
 
@@ -67,12 +67,12 @@ func (group *Group) SetMaterial(material Material) {
 	group.Material = material
 }
 
-func (group *Group) GetParent() *Group {
+func (group *Group) GetParent() Shape {
 	return group.Parent
 }
 
-func (group *Group) SetParent(g *Group) {
-	group.Parent = g
+func (group *Group) SetParent(s Shape) {
+	group.Parent = s
 }
 
 func (group *Group) AddChild(s Shape) {

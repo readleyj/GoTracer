@@ -10,7 +10,7 @@ type SmoothTriangle struct {
 	ID         int64
 	Material   Material
 	Transform  Matrix
-	Parent     *Group
+	Parent     Shape
 	P1, P2, P3 Tuple
 	N1, N2, N3 Tuple
 	E1, E2     Tuple
@@ -99,10 +99,10 @@ func (tri *SmoothTriangle) SetMaterial(material Material) {
 	tri.Material = material
 }
 
-func (tri *SmoothTriangle) GetParent() *Group {
+func (tri *SmoothTriangle) GetParent() Shape {
 	return tri.Parent
 }
 
-func (tri *SmoothTriangle) SetParent(g *Group) {
-	tri.Parent = g
+func (tri *SmoothTriangle) SetParent(s Shape) {
+	tri.Parent = s
 }

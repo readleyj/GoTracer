@@ -10,7 +10,7 @@ type Cylinder struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
-	Parent    *Group
+	Parent    Shape
 	Minimum   float64
 	Maximum   float64
 	Closed    bool
@@ -115,10 +115,10 @@ func (cyl *Cylinder) IntersectCaps(ray Ray, xs Intersections) Intersections {
 	return xs
 }
 
-func (cyl *Cylinder) GetParent() *Group {
+func (cyl *Cylinder) GetParent() Shape {
 	return cyl.Parent
 }
 
-func (cyl *Cylinder) SetParent(g *Group) {
-	cyl.Parent = g
+func (cyl *Cylinder) SetParent(s Shape) {
+	cyl.Parent = s
 }

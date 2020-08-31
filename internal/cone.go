@@ -10,7 +10,7 @@ type Cone struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
-	Parent    *Group
+	Parent    Shape
 	Minimum   float64
 	Maximum   float64
 	Closed    bool
@@ -130,10 +130,10 @@ func (cone *Cone) IntersectCaps(ray Ray, xs Intersections) Intersections {
 	return xs
 }
 
-func (cone *Cone) GetParent() *Group {
+func (cone *Cone) GetParent() Shape {
 	return cone.Parent
 }
 
-func (cone *Cone) SetParent(g *Group) {
-	cone.Parent = g
+func (cone *Cone) SetParent(s Shape) {
+	cone.Parent = s
 }

@@ -10,7 +10,7 @@ type Triangle struct {
 	ID         int64
 	Material   Material
 	Transform  Matrix
-	Parent     *Group
+	Parent     Shape
 	P1, P2, P3 Tuple
 	E1, E2     Tuple
 	Normal     Tuple
@@ -89,10 +89,10 @@ func (tri *Triangle) SetMaterial(material Material) {
 	tri.Material = material
 }
 
-func (tri *Triangle) GetParent() *Group {
+func (tri *Triangle) GetParent() Shape {
 	return tri.Parent
 }
 
-func (tri *Triangle) SetParent(g *Group) {
-	tri.Parent = g
+func (tri *Triangle) SetParent(s Shape) {
+	tri.Parent = s
 }

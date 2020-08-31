@@ -10,7 +10,7 @@ type Cube struct {
 	ID        int64
 	Material  Material
 	Transform Matrix
-	Parent    *Group
+	Parent    Shape
 }
 
 func init() {
@@ -77,10 +77,10 @@ func (c *Cube) SetMaterial(material Material) {
 	c.Material = material
 }
 
-func (c *Cube) GetParent() *Group {
+func (c *Cube) GetParent() Shape {
 	return c.Parent
 }
 
-func (c *Cube) SetParent(g *Group) {
-	c.Parent = g
+func (c *Cube) SetParent(s Shape) {
+	c.Parent = s
 }
