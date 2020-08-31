@@ -18,7 +18,7 @@ func TestAddChildToGroup(t *testing.T) {
 	s := NewTestShape()
 	g.AddChild(s)
 
-	_, includes := Includes(g.Children, s)
+	_, includes := IndexOf(g.Children, s)
 
 	assert.NotEqual(t, 0, len(g.Children))
 	assert.True(t, includes)

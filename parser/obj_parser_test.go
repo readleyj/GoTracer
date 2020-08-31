@@ -131,8 +131,8 @@ f 1 3 4`
 	g1 := obj.GetGroup("FirstGroup")
 	g2 := obj.GetGroup("SecondGroup")
 
-	_, includesG1 := internal.Includes(g.Children, g1)
-	_, includesG2 := internal.Includes(g.Children, g2)
+	_, includesG1 := internal.IndexOf(g.Children, g1)
+	_, includesG2 := internal.IndexOf(g.Children, g2)
 
 	assert.True(t, includesG1)
 	assert.True(t, includesG2)

@@ -13,9 +13,32 @@ const (
 
 var opt = cmpopts.EquateApprox(0, float64EqualityThreshold)
 
-func Includes(objects []Shape, target Shape) (int, bool) {
+func Includes(left Shape, target Shape) bool {
+	switch t := left.(type) {
+	case *Group:
+		for _, child := range t.Children {
+			if child.GetID() == target.GetID() {
+				return true
+			}
+
+			return Includes(child, target)
+		}
+
+	case *CSG:
+		includesLeft := Includes(t.LeftShape, target)
+		includesRight := Includes(t.RightShape, target)
+		return includesLeft || includesRight
+
+	default:
+		return left.GetID() == target.GetID()
+	}
+
+	return false
+}
+
+func IndexOf(objects []Shape, target Shape) (int, bool) {
 	for index, obj := range objects {
-		if ShapesAreIdentical(obj, target) {
+		if obj.GetID() == target.GetID() {
 			return index, true
 		}
 	}

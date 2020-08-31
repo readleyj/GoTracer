@@ -50,7 +50,7 @@ func PrepareComputations(intersection Intersection, ray Ray, xs Intersections) C
 			}
 		}
 
-		index, includes := Includes(containers, i.Object)
+		index, includes := IndexOf(containers, i.Object)
 
 		if includes {
 			containers = DeleteAtIndex(containers, index)
