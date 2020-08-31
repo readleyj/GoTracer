@@ -8,7 +8,8 @@ import (
 )
 
 type Canvas struct {
-	W, H   int
+	W      int
+	H      int
 	Pixels []Color
 }
 

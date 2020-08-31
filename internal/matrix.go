@@ -40,7 +40,6 @@ func NewMatrix4(elems []float64) Matrix {
 
 func NewMatrix3(elems []float64) Matrix {
 	return NewMatrix(elems, 3, 3)
-
 }
 
 func NewMatrix2(elems []float64) Matrix {

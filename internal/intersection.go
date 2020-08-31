@@ -34,9 +34,11 @@ func IntersectEquals(i1, i2 Intersection) bool {
 func NewIntersections(intersects ...Intersection) Intersections {
 	results := make([]Intersection, len(intersects))
 	copy(results[:], intersects)
+
 	sort.Slice(results, func(i, j int) bool {
 		return results[i].T < results[j].T
 	})
+
 	return results
 }
 

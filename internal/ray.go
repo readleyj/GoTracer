@@ -1,7 +1,8 @@
 package internal
 
 type Ray struct {
-	Origin, Direction Tuple
+	Origin    Tuple
+	Direction Tuple
 }
 
 func NewRay(origin, direction Tuple) Ray {
