@@ -7,13 +7,15 @@ import (
 )
 
 type Triangle struct {
-	ID         int64
-	Material   Material
-	Transform  Matrix
-	Parent     Shape
-	P1, P2, P3 Tuple
-	E1, E2     Tuple
-	Normal     Tuple
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
+	P1, P2, P3       Tuple
+	E1, E2           Tuple
+	Normal           Tuple
 }
 
 func init() {
@@ -24,16 +26,18 @@ func NewTriangle(p1, p2, p3 Tuple) *Triangle {
 	e1, e2 := SubTuples(p2, p1), SubTuples(p3, p1)
 
 	return &Triangle{
-		ID:        rand.Int63(),
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
-		P1:        p1,
-		P2:        p2,
-		P3:        p3,
-		E1:        e1,
-		E2:        e2,
-		Normal:    Normalize(Cross(e2, e1)),
+		ID:               rand.Int63(),
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
+		P1:               p1,
+		P2:               p2,
+		P3:               p3,
+		E1:               e1,
+		E2:               e2,
+		Normal:           Normalize(Cross(e2, e1)),
 	}
 }
 
@@ -79,6 +83,16 @@ func (tri *Triangle) GetTransform() Matrix {
 
 func (tri *Triangle) SetTransform(transform Matrix) {
 	tri.Transform = transform
+	tri.Inverse = MatrixInverse(tri.Transform)
+	tri.InverseTranspose = MatrixTranspose(tri.Inverse)
+}
+
+func (tri *Triangle) GetInverse() Matrix {
+	return tri.Inverse
+}
+
+func (tri *Triangle) GetInverseTranspose() Matrix {
+	return tri.InverseTranspose
 }
 
 func (tri *Triangle) GetMaterial() Material {

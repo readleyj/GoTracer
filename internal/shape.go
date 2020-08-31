@@ -4,8 +4,11 @@ import "github.com/google/go-cmp/cmp"
 
 type Shape interface {
 	GetID() int64
+
 	GetTransform() Matrix
 	SetTransform(t Matrix)
+	GetInverse() Matrix
+	GetInverseTranspose() Matrix
 
 	GetMaterial() Material
 	SetMaterial(m Material)
@@ -18,18 +21,22 @@ type Shape interface {
 }
 
 type TestShape struct {
-	Material  Material
-	Transform Matrix
-	Parent    Shape
-	SavedRay  Ray
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
+	SavedRay         Ray
 }
 
 func NewTestShape() *TestShape {
 	return &TestShape{
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
-		SavedRay:  Ray{},
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
+		SavedRay:         Ray{},
 	}
 }
 
@@ -43,6 +50,16 @@ func (t *TestShape) GetTransform() Matrix {
 
 func (t *TestShape) SetTransform(transform Matrix) {
 	t.Transform = transform
+	t.Inverse = MatrixInverse(t.Transform)
+	t.Transform = MatrixTranspose(t.Inverse)
+}
+
+func (t *TestShape) GetInverse() Matrix {
+	return t.Inverse
+}
+
+func (t *TestShape) GetInverseTranspose() Matrix {
+	return t.InverseTranspose
 }
 
 func (t *TestShape) GetMaterial() Material {
@@ -71,7 +88,7 @@ func (t *TestShape) SetParent(s Shape) {
 }
 
 func Intersect(s Shape, ray Ray) Intersections {
-	r := TransformRay(ray, MatrixInverse(s.GetTransform()))
+	r := TransformRay(ray, s.GetInverse())
 	return s.LocalIntersect(r)
 }
 
@@ -92,11 +109,11 @@ func WorldToObject(s Shape, point Tuple) Tuple {
 		point = WorldToObject(s.GetParent(), point)
 	}
 
-	return MatrixTupleMultiply(MatrixInverse(s.GetTransform()), point)
+	return MatrixTupleMultiply(s.GetInverse(), point)
 }
 
 func NormalToWorld(s Shape, normal Tuple) Tuple {
-	normal = MatrixTupleMultiply(MatrixTranspose(MatrixInverse(s.GetTransform())), normal)
+	normal = MatrixTupleMultiply(s.GetInverseTranspose(), normal)
 	normal.W = 0
 	normal = Normalize(normal)
 

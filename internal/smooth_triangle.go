@@ -7,14 +7,16 @@ import (
 )
 
 type SmoothTriangle struct {
-	ID         int64
-	Material   Material
-	Transform  Matrix
-	Parent     Shape
-	P1, P2, P3 Tuple
-	N1, N2, N3 Tuple
-	E1, E2     Tuple
-	Normal     Tuple
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
+	P1, P2, P3       Tuple
+	N1, N2, N3       Tuple
+	E1, E2           Tuple
+	Normal           Tuple
 }
 
 func init() {
@@ -25,19 +27,21 @@ func NewSmoothTriangle(p1, p2, p3, n1, n2, n3 Tuple) *SmoothTriangle {
 	e1, e2 := SubTuples(p2, p1), SubTuples(p3, p1)
 
 	return &SmoothTriangle{
-		ID:        rand.Int63(),
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
-		P1:        p1,
-		P2:        p2,
-		P3:        p3,
-		N1:        n1,
-		N2:        n2,
-		N3:        n3,
-		E1:        e1,
-		E2:        e2,
-		Normal:    Normalize(Cross(e2, e1)),
+		ID:               rand.Int63(),
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
+		P1:               p1,
+		P2:               p2,
+		P3:               p3,
+		N1:               n1,
+		N2:               n2,
+		N3:               n3,
+		E1:               e1,
+		E2:               e2,
+		Normal:           Normalize(Cross(e2, e1)),
 	}
 }
 
@@ -89,6 +93,16 @@ func (tri *SmoothTriangle) GetTransform() Matrix {
 
 func (tri *SmoothTriangle) SetTransform(transform Matrix) {
 	tri.Transform = transform
+	tri.Inverse = MatrixInverse(tri.Transform)
+	tri.InverseTranspose = MatrixTranspose(tri.Inverse)
+}
+
+func (tri *SmoothTriangle) GetInverse() Matrix {
+	return tri.Inverse
+}
+
+func (tri *SmoothTriangle) GetInverseTranspose() Matrix {
+	return tri.InverseTranspose
 }
 
 func (tri *SmoothTriangle) GetMaterial() Material {

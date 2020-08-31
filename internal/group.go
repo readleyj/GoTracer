@@ -7,11 +7,13 @@ import (
 )
 
 type Group struct {
-	ID        int64
-	Material  Material
-	Transform Matrix
-	Parent    Shape
-	Children  []Shape
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
+	Children         []Shape
 }
 
 func init() {
@@ -20,11 +22,13 @@ func init() {
 
 func NewGroup() *Group {
 	return &Group{
-		ID:        rand.Int63(),
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
-		Children:  []Shape{},
+		ID:               rand.Int63(),
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
+		Children:         []Shape{},
 	}
 }
 
@@ -57,6 +61,16 @@ func (group *Group) GetTransform() Matrix {
 
 func (group *Group) SetTransform(transform Matrix) {
 	group.Transform = transform
+	group.Inverse = MatrixInverse(group.Transform)
+	group.InverseTranspose = MatrixTranspose(group.Inverse)
+}
+
+func (group *Group) GetInverse() Matrix {
+	return group.Inverse
+}
+
+func (group *Group) GetInverseTranspose() Matrix {
+	return group.InverseTranspose
 }
 
 func (group *Group) GetMaterial() Material {

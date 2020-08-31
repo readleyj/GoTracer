@@ -7,13 +7,15 @@ import (
 )
 
 type Cylinder struct {
-	ID        int64
-	Material  Material
-	Transform Matrix
-	Parent    Shape
-	Minimum   float64
-	Maximum   float64
-	Closed    bool
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
+	Minimum          float64
+	Maximum          float64
+	Closed           bool
 }
 
 func init() {
@@ -22,13 +24,15 @@ func init() {
 
 func NewCylinder() *Cylinder {
 	return &Cylinder{
-		ID:        rand.Int63(),
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
-		Minimum:   math.Inf(-1),
-		Maximum:   math.Inf(1),
-		Closed:    false,
+		ID:               rand.Int63(),
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
+		Minimum:          math.Inf(-1),
+		Maximum:          math.Inf(1),
+		Closed:           false,
 	}
 }
 
@@ -85,6 +89,16 @@ func (cyl *Cylinder) GetTransform() Matrix {
 
 func (cyl *Cylinder) SetTransform(transform Matrix) {
 	cyl.Transform = transform
+	cyl.Inverse = MatrixInverse(cyl.Transform)
+	cyl.InverseTranspose = MatrixTranspose(cyl.Inverse)
+}
+
+func (cyl *Cylinder) GetInverse() Matrix {
+	return cyl.Inverse
+}
+
+func (cyl *Cylinder) GetInverseTranspose() Matrix {
+	return cyl.InverseTranspose
 }
 
 func (cyl *Cylinder) GetMaterial() Material {

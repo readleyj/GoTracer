@@ -19,13 +19,15 @@ func (op CSGOperation) String() string {
 }
 
 type CSG struct {
-	ID        int64
-	Material  Material
-	Transform Matrix
-	Parent    Shape
-	Operation CSGOperation
-	Left      Shape
-	Right     Shape
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
+	Operation        CSGOperation
+	Left             Shape
+	Right            Shape
 }
 
 func init() {
@@ -34,13 +36,15 @@ func init() {
 
 func NewCSG(op CSGOperation, left, right Shape) *CSG {
 	csg := &CSG{
-		ID:        rand.Int63(),
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
-		Operation: op,
-		Left:      left,
-		Right:     right,
+		ID:               rand.Int63(),
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
+		Operation:        op,
+		Left:             left,
+		Right:            right,
 	}
 
 	left.SetParent(csg)
@@ -75,6 +79,16 @@ func (csg *CSG) GetTransform() Matrix {
 
 func (csg *CSG) SetTransform(transform Matrix) {
 	csg.Transform = transform
+	csg.Inverse = MatrixInverse(csg.Transform)
+	csg.InverseTranspose = MatrixTranspose(csg.Inverse)
+}
+
+func (csg *CSG) GetInverse() Matrix {
+	return csg.Inverse
+}
+
+func (csg *CSG) GetInverseTranspose() Matrix {
+	return csg.InverseTranspose
 }
 
 func (csg *CSG) GetMaterial() Material {

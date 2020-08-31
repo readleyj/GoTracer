@@ -7,13 +7,15 @@ import (
 )
 
 type Cone struct {
-	ID        int64
-	Material  Material
-	Transform Matrix
-	Parent    Shape
-	Minimum   float64
-	Maximum   float64
-	Closed    bool
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
+	Minimum          float64
+	Maximum          float64
+	Closed           bool
 }
 
 func init() {
@@ -100,6 +102,16 @@ func (cone *Cone) GetTransform() Matrix {
 
 func (cone *Cone) SetTransform(transform Matrix) {
 	cone.Transform = transform
+	cone.Inverse = MatrixInverse(cone.Transform)
+	cone.InverseTranspose = MatrixTranspose(cone.Inverse)
+}
+
+func (cone *Cone) GetInverse() Matrix {
+	return cone.Inverse
+}
+
+func (cone *Cone) GetInverseTranspose() Matrix {
+	return cone.InverseTranspose
 }
 
 func (cone *Cone) GetMaterial() Material {

@@ -7,10 +7,12 @@ import (
 )
 
 type Cube struct {
-	ID        int64
-	Material  Material
-	Transform Matrix
-	Parent    Shape
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
 }
 
 func init() {
@@ -19,10 +21,12 @@ func init() {
 
 func NewCube() *Cube {
 	return &Cube{
-		ID:        rand.Int63(),
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
+		ID:               rand.Int63(),
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
 	}
 }
 
@@ -67,6 +71,16 @@ func (c *Cube) GetTransform() Matrix {
 
 func (c *Cube) SetTransform(transform Matrix) {
 	c.Transform = transform
+	c.Inverse = MatrixInverse(c.Transform)
+	c.InverseTranspose = MatrixTranspose(c.Inverse)
+}
+
+func (c *Cube) GetInverse() Matrix {
+	return c.Inverse
+}
+
+func (c *Cube) GetInverseTranspose() Matrix {
+	return c.InverseTranspose
 }
 
 func (c *Cube) GetMaterial() Material {

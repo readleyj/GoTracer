@@ -7,10 +7,12 @@ import (
 )
 
 type Sphere struct {
-	ID        int64
-	Material  Material
-	Transform Matrix
-	Parent    Shape
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
 }
 
 func init() {
@@ -19,10 +21,12 @@ func init() {
 
 func NewSphere() *Sphere {
 	return &Sphere{
-		ID:        rand.Int63(),
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
+		ID:               rand.Int63(),
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
 	}
 }
 
@@ -65,6 +69,16 @@ func (s *Sphere) GetTransform() Matrix {
 
 func (s *Sphere) SetTransform(transform Matrix) {
 	s.Transform = transform
+	s.Inverse = MatrixInverse(s.Transform)
+	s.InverseTranspose = MatrixTranspose(s.Inverse)
+}
+
+func (s *Sphere) GetInverse() Matrix {
+	return s.Inverse
+}
+
+func (s *Sphere) GetInverseTranspose() Matrix {
+	return s.InverseTranspose
 }
 
 func (s *Sphere) GetMaterial() Material {

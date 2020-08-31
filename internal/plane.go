@@ -7,10 +7,12 @@ import (
 )
 
 type Plane struct {
-	ID        int64
-	Material  Material
-	Transform Matrix
-	Parent    Shape
+	ID               int64
+	Material         Material
+	Transform        Matrix
+	Inverse          Matrix
+	InverseTranspose Matrix
+	Parent           Shape
 }
 
 func init() {
@@ -19,10 +21,12 @@ func init() {
 
 func NewPlane() *Plane {
 	return &Plane{
-		ID:        rand.Int63(),
-		Material:  NewDefaultMaterial(),
-		Transform: NewIdentity4(),
-		Parent:    nil,
+		ID:               rand.Int63(),
+		Material:         NewDefaultMaterial(),
+		Transform:        NewIdentity4(),
+		Inverse:          NewIdentity4(),
+		InverseTranspose: NewIdentity4(),
+		Parent:           nil,
 	}
 }
 
@@ -49,6 +53,16 @@ func (p *Plane) GetTransform() Matrix {
 
 func (p *Plane) SetTransform(transform Matrix) {
 	p.Transform = transform
+	p.Inverse = MatrixInverse(p.Transform)
+	p.InverseTranspose = MatrixTranspose(p.Inverse)
+}
+
+func (p *Plane) GetInverse() Matrix {
+	return p.Inverse
+}
+
+func (p *Plane) GetInverseTranspose() Matrix {
+	return p.InverseTranspose
 }
 
 func (p *Plane) GetMaterial() Material {
