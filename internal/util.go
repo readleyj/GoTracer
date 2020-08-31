@@ -25,8 +25,8 @@ func Includes(left Shape, target Shape) bool {
 		}
 
 	case *CSG:
-		includesLeft := Includes(t.LeftShape, target)
-		includesRight := Includes(t.RightShape, target)
+		includesLeft := Includes(t.Left, target)
+		includesRight := Includes(t.Right, target)
 		return includesLeft || includesRight
 
 	default:
