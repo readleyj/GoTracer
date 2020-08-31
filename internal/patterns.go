@@ -25,7 +25,11 @@ type TestPattern struct {
 }
 
 func NewTestPattern() *TestPattern {
-	return &TestPattern{white, black, NewIdentity4()}
+	return &TestPattern{
+		A:         white,
+		B:         black,
+		Transform: NewIdentity4(),
+	}
 }
 
 func (p *TestPattern) GetTransform() Matrix {
@@ -47,7 +51,11 @@ type StripePattern struct {
 }
 
 func NewStripePattern(a, b Color) *StripePattern {
-	return &StripePattern{a, b, NewIdentity4()}
+	return &StripePattern{
+		A:         a,
+		B:         b,
+		Transform: NewIdentity4(),
+	}
 }
 
 func (p *StripePattern) PatternAt(point Tuple) Color {
@@ -73,7 +81,11 @@ type GradientPattern struct {
 }
 
 func NewGradientPattern(a, b Color) *GradientPattern {
-	return &GradientPattern{a, b, NewIdentity4()}
+	return &GradientPattern{
+		A:         a,
+		B:         b,
+		Transform: NewIdentity4(),
+	}
 }
 
 func (p *GradientPattern) PatternAt(point Tuple) Color {
@@ -98,7 +110,11 @@ type RingPattern struct {
 }
 
 func NewRingPattern(a, b Color) *RingPattern {
-	return &RingPattern{a, b, NewIdentity4()}
+	return &RingPattern{
+		A:         a,
+		B:         b,
+		Transform: NewIdentity4(),
+	}
 }
 
 func (p *RingPattern) PatternAt(point Tuple) Color {
@@ -126,7 +142,11 @@ type CheckersPattern struct {
 }
 
 func NewCheckersPattern(a, b Color) *CheckersPattern {
-	return &CheckersPattern{a, b, NewIdentity4()}
+	return &CheckersPattern{
+		A:         a,
+		B:         b,
+		Transform: NewIdentity4(),
+	}
 }
 
 func (p *CheckersPattern) PatternAt(point Tuple) Color {

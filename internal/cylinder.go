@@ -22,13 +22,13 @@ func init() {
 
 func NewCylinder() *Cylinder {
 	return &Cylinder{
-		rand.Int63(),
-		NewDefaultMaterial(),
-		NewIdentity4(),
-		nil,
-		math.Inf(-1),
-		math.Inf(1),
-		false,
+		ID:        rand.Int63(),
+		Material:  NewDefaultMaterial(),
+		Transform: NewIdentity4(),
+		Parent:    nil,
+		Minimum:   math.Inf(-1),
+		Maximum:   math.Inf(1),
+		Closed:    false,
 	}
 }
 

@@ -24,16 +24,16 @@ func NewTriangle(p1, p2, p3 Tuple) *Triangle {
 	e1, e2 := SubTuples(p2, p1), SubTuples(p3, p1)
 
 	return &Triangle{
-		rand.Int63(),
-		NewDefaultMaterial(),
-		NewIdentity4(),
-		nil,
-		p1,
-		p2,
-		p3,
-		e1,
-		e2,
-		Normalize(Cross(e2, e1)),
+		ID:        rand.Int63(),
+		Material:  NewDefaultMaterial(),
+		Transform: NewIdentity4(),
+		Parent:    nil,
+		P1:        p1,
+		P2:        p2,
+		P3:        p3,
+		E1:        e1,
+		E2:        e2,
+		Normal:    Normalize(Cross(e2, e1)),
 	}
 }
 

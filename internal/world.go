@@ -31,8 +31,8 @@ func NewDefaultWorld() World {
 	s2.SetTransform(Scale(0.5, 0.5, 0.5))
 
 	return World{
-		lights,
-		[]Shape{
+		Lights: lights,
+		Objects: []Shape{
 			s1,
 			s2,
 		},

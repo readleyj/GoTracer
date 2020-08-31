@@ -21,7 +21,11 @@ func NewMatrix(elems []float64, numRows, numCols int) Matrix {
 		panic("The number of values and matrix dimensions do not match")
 	}
 
-	mat := Matrix{numRows, numCols, make([]float64, numRows*numCols)}
+	mat := Matrix{
+		rows:  numRows,
+		cols:  numCols,
+		elems: make([]float64, numRows*numCols),
+	}
 	copy(mat.elems[:], elems)
 	return mat
 }

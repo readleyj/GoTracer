@@ -5,7 +5,10 @@ type Ray struct {
 }
 
 func NewRay(origin, direction Tuple) Ray {
-	return Ray{origin, direction}
+	return Ray{
+		Origin:    origin,
+		Direction: direction,
+	}
 }
 
 func Position(r Ray, dist float64) Tuple {

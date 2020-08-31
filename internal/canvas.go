@@ -19,7 +19,11 @@ func NewCanvas(W, H int) *Canvas {
 		pixels[i] = NewColor(0, 0, 0)
 	}
 
-	return &Canvas{W: W, H: H, Pixels: pixels}
+	return &Canvas{
+		W:      W,
+		H:      H,
+		Pixels: pixels,
+	}
 }
 
 func (c *Canvas) WritePixelAtCoord(x, y int, col Color) {

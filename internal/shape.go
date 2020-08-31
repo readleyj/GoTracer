@@ -26,10 +26,10 @@ type TestShape struct {
 
 func NewTestShape() *TestShape {
 	return &TestShape{
-		NewDefaultMaterial(),
-		NewIdentity4(),
-		nil,
-		Ray{},
+		Material:  NewDefaultMaterial(),
+		Transform: NewIdentity4(),
+		Parent:    nil,
+		SavedRay:  Ray{},
 	}
 }
 

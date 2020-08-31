@@ -15,7 +15,12 @@ type Intersection struct {
 type Intersections []Intersection
 
 func NewIntersection(T float64, object Shape) Intersection {
-	return Intersection{T, 0, 0, object}
+	return Intersection{
+		T:      T,
+		U:      0,
+		V:      0,
+		Object: object,
+	}
 }
 
 func NewIntersectionUV(T float64, object Shape, U, V float64) Intersection {

@@ -8,7 +8,10 @@ type PointLight struct {
 }
 
 func NewPointLight(position Tuple, intensity Color) PointLight {
-	return PointLight{position, intensity}
+	return PointLight{
+		Position:  position,
+		Intensity: intensity,
+	}
 }
 
 func PointLightEquals(l1, l2 PointLight) bool {

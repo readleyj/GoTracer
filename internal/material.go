@@ -38,17 +38,17 @@ func NewDefaultMaterial() Material {
 	}
 }
 
-func NewMaterial(color Color, pattern Pattern, amb, dif, spec, shin, reflect, trans, refr float64) Material {
+func NewMaterial(color Color, pattern Pattern, amb, dif, spec, shin, reflect, transp, refr float64) Material {
 	return Material{
-		color,
-		pattern,
-		amb,
-		dif,
-		spec,
-		shin,
-		reflect,
-		trans,
-		refr,
+		Color:           color,
+		Pattern:         pattern,
+		Ambient:         amb,
+		Diffuse:         dif,
+		Specular:        spec,
+		Shininess:       shin,
+		Reflective:      reflect,
+		Transparency:    transp,
+		RefractiveIndex: refr,
 	}
 }
 

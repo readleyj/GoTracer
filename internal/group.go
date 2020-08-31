@@ -20,11 +20,11 @@ func init() {
 
 func NewGroup() *Group {
 	return &Group{
-		rand.Int63(),
-		NewDefaultMaterial(),
-		NewIdentity4(),
-		nil,
-		[]Shape{},
+		ID:        rand.Int63(),
+		Material:  NewDefaultMaterial(),
+		Transform: NewIdentity4(),
+		Parent:    nil,
+		Children:  []Shape{},
 	}
 }
 

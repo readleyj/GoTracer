@@ -7,7 +7,11 @@ type Color struct {
 }
 
 func NewColor(r, g, b float64) Color {
-	return Color{r, g, b}
+	return Color{
+		R: r,
+		G: g,
+		B: b,
+	}
 }
 
 func AddColors(c1, c2 Color) Color {

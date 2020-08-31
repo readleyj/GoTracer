@@ -19,10 +19,10 @@ func init() {
 
 func NewPlane() *Plane {
 	return &Plane{
-		rand.Int63(),
-		NewDefaultMaterial(),
-		NewIdentity4(),
-		nil,
+		ID:        rand.Int63(),
+		Material:  NewDefaultMaterial(),
+		Transform: NewIdentity4(),
+		Parent:    nil,
 	}
 }
 

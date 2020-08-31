@@ -34,13 +34,13 @@ func init() {
 
 func NewCSG(op CSGOperation, left, right Shape) *CSG {
 	csg := &CSG{
-		rand.Int63(),
-		NewDefaultMaterial(),
-		NewIdentity4(),
-		nil,
-		op,
-		left,
-		right,
+		ID:        rand.Int63(),
+		Material:  NewDefaultMaterial(),
+		Transform: NewIdentity4(),
+		Parent:    nil,
+		Operation: op,
+		Left:      left,
+		Right:     right,
 	}
 
 	left.SetParent(csg)
