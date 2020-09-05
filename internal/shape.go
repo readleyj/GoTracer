@@ -51,7 +51,7 @@ func (t *TestShape) GetTransform() Matrix {
 func (t *TestShape) SetTransform(transform Matrix) {
 	t.Transform = transform
 	t.Inverse = MatrixInverse(t.Transform)
-	t.Transform = MatrixTranspose(t.Inverse)
+	t.InverseTranspose = MatrixTranspose(t.Inverse)
 }
 
 func (t *TestShape) GetInverse() Matrix {
