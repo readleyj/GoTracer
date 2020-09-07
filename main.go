@@ -71,7 +71,7 @@ func RenderSphere() {
 				point := internal.Position(r, hit.T)
 				normal := internal.NormalAt(hit.Object, point, internal.Intersection{})
 				eye := internal.Negate(r.Direction)
-				color := internal.Lighting(hit.Object.GetMaterial(), internal.NewSphere(), light, point, eye, normal, false)
+				color := internal.Lighting(hit.Object.GetMaterial(), internal.NewSphere(), light, point, eye, normal, 1.0)
 
 				canvas.WritePixelAtCoord(x, y, color)
 			}
@@ -166,8 +166,13 @@ func RenderScene() {
 	ioutil.WriteFile("scene.ppm", []byte(canvas.ToPPM()), 0)
 }
 
+func RenderAdvanced() {
+
+}
+
 func main() {
 	// RenderCircle()
 	// RenderSphere()
-	RenderScene()
+	// RenderScene()
+	RenderAdvanced()
 }

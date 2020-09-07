@@ -50,30 +50,21 @@ func TestIntersectWorldWithRay(t *testing.T) {
 	assert.InDelta(t, 6.0, xs[3].T, float64EqualityThreshold)
 }
 
-func TestNoShadowNothingColinearWithPointAndLight(t *testing.T) {
+func TestIsShadowedTestForOcclusionBetweenTwoPoints(t *testing.T) {
+	testCases := []struct {
+		point  Tuple
+		result bool
+	}{
+		{NewPoint(-10, -10, 10), false},
+		{NewPoint(10, 10, 10), true},
+		{NewPoint(-20, -20, -20), false},
+		{NewPoint(-5, -5, -5), false},
+	}
+
 	w := NewDefaultWorld()
-	p := NewPoint(0, 10, 0)
+	lightPos := NewPoint(-10, -10, -10)
 
-	assert.False(t, IsShadowed(w, p))
-}
-
-func TestShadowObjectBetweenPointAndLight(t *testing.T) {
-	w := NewDefaultWorld()
-	p := NewPoint(10, -10, 10)
-
-	assert.True(t, IsShadowed(w, p))
-}
-
-func TestNoShadowObjectBehindLight(t *testing.T) {
-	w := NewDefaultWorld()
-	p := NewPoint(-20, 20, -20)
-
-	assert.False(t, IsShadowed(w, p))
-}
-
-func TestNoShadowObjectBehindPoint(t *testing.T) {
-	w := NewDefaultWorld()
-	p := NewPoint(-2, 2, -2)
-
-	assert.False(t, IsShadowed(w, p))
+	for _, test := range testCases {
+		assert.Equal(t, test.result, IsShadowed(w, lightPos, test.point))
+	}
 }

@@ -53,12 +53,8 @@ func IntersectWorld(w World, r Ray) Intersections {
 	return NewIntersections(intersects...)
 }
 
-// Currently IsShadowed does the calculation
-// on the first light in the passed World's Lights
-// This will have to be fixed
-// The other lights have to be considered as well
-func IsShadowed(world World, point Tuple) bool {
-	v := SubTuples(world.Lights[0].Position, point)
+func IsShadowed(world World, lightPos, point Tuple) bool {
+	v := SubTuples(lightPos, point)
 	distance := Magnitude(v)
 	direction := Normalize(v)
 
