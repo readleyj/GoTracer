@@ -34,6 +34,9 @@ func ColorScalarMultiply(c1 Color, scalar float64) Color {
 	return NewColor(c1.R*scalar, c1.G*scalar, c1.B*scalar)
 }
 
+func ColorScalarDivide(c1 Color, scalar float64) Color {
+	return NewColor(c1.R/scalar, c1.G/scalar, c1.B/scalar)
+}
 func (c1 Color) MultiplyByScalar(scalar float64) Color {
 	return NewColor(c1.R*scalar, c1.G*scalar, c1.B*scalar)
 }
