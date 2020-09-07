@@ -50,11 +50,11 @@ func DeleteAtIndex(objects []Shape, index int) []Shape {
 	return append(objects[:index], objects[index+1:]...)
 }
 
-func CheckAxis(origin, direction float64) (float64, float64) {
+func CheckAxis(origin, direction, min, max float64) (float64, float64) {
 	var tMin, tMax float64
 
-	tMinNumerator := -origin - 1
-	tMaxNumerator := -origin + 1
+	tMinNumerator := min - origin
+	tMaxNumerator := max - origin
 
 	if math.Abs(direction) >= float64EqualityThreshold {
 		tMin = tMinNumerator / direction

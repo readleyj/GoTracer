@@ -503,3 +503,109 @@ func TestIntersectionEncapsulatesUV(t *testing.T) {
 	assert.InDelta(t, 0.2, i.U, float64EqualityThreshold)
 	assert.InDelta(t, 0.4, i.V, float64EqualityThreshold)
 }
+
+func TestIntersectRayWithBoundingBoxAtOrigin(t *testing.T) {
+	testCases := []struct {
+		origin    Tuple
+		direction Tuple
+		result    bool
+	}{
+		{NewPoint(5, 0.5, 0), NewVector(-1, 0, 0), true},
+		{NewPoint(-5, 0.5, 0), NewVector(1, 0, 0), true},
+		{NewPoint(0.5, 5, 0), NewVector(0, -1, 0), true},
+		{NewPoint(0.5, -5, 0), NewVector(0, 1, 0), true},
+		{NewPoint(0.5, 0, 5), NewVector(0, 0, -1), true},
+		{NewPoint(0.5, 0, -5), NewVector(0, 0, 1), true},
+		{NewPoint(0, 0.5, 0), NewVector(0, 0, 1), true},
+		{NewPoint(-2, 0, 0), NewVector(2, 4, 6), false},
+		{NewPoint(0, -2, 0), NewVector(6, 2, 4), false},
+		{NewPoint(0, 0, -2), NewVector(4, 6, 2), false},
+		{NewPoint(2, 0, 2), NewVector(0, 0, -1), false},
+		{NewPoint(0, 2, 2), NewVector(0, -1, 0), false},
+		{NewPoint(2, 2, 0), NewVector(-1, 0, 0), false},
+	}
+
+	box := NewBoundingBox(NewPoint(-1, -1, -1), NewPoint(1, 1, 1))
+
+	for _, test := range testCases {
+		direction := Normalize(test.direction)
+		r := NewRay(test.origin, direction)
+
+		assert.Equal(t, test.result, RayIntersectsBox(box, r))
+	}
+}
+
+func TestIntersectRayWithNonCubicBoundingBox(t *testing.T) {
+	testCases := []struct {
+		origin    Tuple
+		direction Tuple
+		result    bool
+	}{
+		{NewPoint(15, 1, 2), NewVector(-1, 0, 0), true},
+		{NewPoint(-5, -1, 4), NewVector(1, 0, 0), true},
+		{NewPoint(7, 6, 5), NewVector(0, -1, 0), true},
+		{NewPoint(9, -5, 6), NewVector(0, 1, 0), true},
+		{NewPoint(8, 2, 12), NewVector(0, 0, -1), true},
+		{NewPoint(6, 0, -5), NewVector(0, 0, 1), true},
+		{NewPoint(8, 1, 3.5), NewVector(0, 0, 1), true},
+		{NewPoint(9, -1, -8), NewVector(2, 4, 6), false},
+		{NewPoint(8, 3, -4), NewVector(6, 2, 4), false},
+		{NewPoint(9, -1, -2), NewVector(4, 6, 2), false},
+		{NewPoint(4, 0, 9), NewVector(0, 0, -1), false},
+		{NewPoint(8, 6, -1), NewVector(0, -1, 0), false},
+		{NewPoint(12, 5, 4), NewVector(-1, 0, 0), false},
+	}
+
+	box := NewBoundingBox(NewPoint(5, -2, 0), NewPoint(11, 4, 7))
+
+	for _, test := range testCases {
+		direction := Normalize(test.direction)
+		r := NewRay(test.origin, direction)
+
+		assert.Equal(t, test.result, RayIntersectsBox(box, r))
+	}
+}
+
+func TestIntersectingRayAndGroupDoesNotTestChildrenIfBoxIsMisssed(t *testing.T) {
+	child := NewTestShape()
+	shape := NewGroup()
+	shape.AddChild(child)
+
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 1, 0))
+	Intersect(shape, r)
+	assert.Equal(t, Ray{}, child.SavedRay)
+}
+
+func TestIntersectingRayAndGroupTestsChildrenIfBoxIsHit(t *testing.T) {
+	child := NewTestShape()
+	shape := NewGroup()
+	shape.AddChild(child)
+
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	Intersect(shape, r)
+	assert.NotEqual(t, Ray{}, child.SavedRay)
+}
+
+func TestIntersectingRayAndCSGDoesNotTestChildrenIfBoxIsMissed(t *testing.T) {
+	left := NewTestShape()
+	right := NewTestShape()
+	shape := NewCSG(CSGDifference, left, right)
+
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 1, 0))
+	Intersect(shape, r)
+
+	assert.Equal(t, Ray{}, left.SavedRay)
+	assert.Equal(t, Ray{}, right.SavedRay)
+}
+
+func TestIntersectingRayAndCSGTestsChildrenIfBoxIsHit(t *testing.T) {
+	left := NewTestShape()
+	right := NewTestShape()
+	shape := NewCSG(CSGDifference, left, right)
+
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	Intersect(shape, r)
+
+	assert.NotEqual(t, Ray{}, left.SavedRay)
+	assert.NotEqual(t, Ray{}, right.SavedRay)
+}

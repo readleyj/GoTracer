@@ -37,18 +37,22 @@ func (group *Group) GetID() int64 {
 }
 
 func (group *Group) LocalIntersect(ray Ray) Intersections {
-	var intersects Intersections
+	if RayIntersectsBox(BoundsOf(group), ray) {
+		var intersects Intersections
 
-	for _, child := range group.Children {
-		childIntersects := Intersect(child, ray)
-		intersects = append(intersects, childIntersects...)
+		for _, child := range group.Children {
+			childIntersects := Intersect(child, ray)
+			intersects = append(intersects, childIntersects...)
+		}
+
+		sort.Slice(intersects, func(i, j int) bool {
+			return intersects[i].T < intersects[j].T
+		})
+
+		return intersects
 	}
 
-	sort.Slice(intersects, func(i, j int) bool {
-		return intersects[i].T < intersects[j].T
-	})
-
-	return intersects
+	return Intersections{}
 }
 
 func (group *Group) LocalNormalAt(point Tuple, hit Intersection) Tuple {

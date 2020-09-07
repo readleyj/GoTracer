@@ -58,15 +58,19 @@ func (csg *CSG) GetID() int64 {
 }
 
 func (csg *CSG) LocalIntersect(ray Ray) Intersections {
-	leftXS := Intersect(csg.Left, ray)
-	rightXS := Intersect(csg.Right, ray)
+	if RayIntersectsBox(BoundsOf(csg), ray) {
+		leftXS := Intersect(csg.Left, ray)
+		rightXS := Intersect(csg.Right, ray)
 
-	xs := append(leftXS, rightXS...)
-	sort.Slice(xs, func(i, j int) bool {
-		return xs[i].T < xs[j].T
-	})
+		xs := append(leftXS, rightXS...)
+		sort.Slice(xs, func(i, j int) bool {
+			return xs[i].T < xs[j].T
+		})
 
-	return FilterIntersections(csg, xs)
+		return FilterIntersections(csg, xs)
+	}
+
+	return Intersections{}
 }
 
 func (csg *CSG) LocalNormalAt(point Tuple, i Intersection) Tuple {

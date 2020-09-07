@@ -35,9 +35,9 @@ func (c *Cube) GetID() int64 {
 }
 
 func (c *Cube) LocalIntersect(localRay Ray) Intersections {
-	xtMin, xtMax := CheckAxis(localRay.Origin.X, localRay.Direction.X)
-	ytMin, ytMax := CheckAxis(localRay.Origin.Y, localRay.Direction.Y)
-	ztMin, ztMax := CheckAxis(localRay.Origin.Z, localRay.Direction.Z)
+	xtMin, xtMax := CheckAxis(localRay.Origin.X, localRay.Direction.X, -1, 1)
+	ytMin, ytMax := CheckAxis(localRay.Origin.Y, localRay.Direction.Y, -1, 1)
+	ztMin, ztMax := CheckAxis(localRay.Origin.Z, localRay.Direction.Z, -1, 1)
 
 	tMin := math.Max(math.Max(xtMin, ytMin), ztMin)
 	tMax := math.Min(math.Min(xtMax, ytMax), ztMax)

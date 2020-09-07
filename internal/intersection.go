@@ -151,3 +151,14 @@ func Schlick(comps Computation) float64 {
 
 	return r0 + (1-r0)*math.Pow(1-cos, 5)
 }
+
+func RayIntersectsBox(box BoundingBox, localRay Ray) bool {
+	xtMin, xtMax := CheckAxis(localRay.Origin.X, localRay.Direction.X, box.Min.X, box.Max.X)
+	ytMin, ytMax := CheckAxis(localRay.Origin.Y, localRay.Direction.Y, box.Min.Y, box.Max.Y)
+	ztMin, ztMax := CheckAxis(localRay.Origin.Z, localRay.Direction.Z, box.Min.Z, box.Max.Z)
+
+	tMin := math.Max(math.Max(xtMin, ytMin), ztMin)
+	tMax := math.Min(math.Min(xtMax, ytMax), ztMax)
+
+	return tMin < tMax
+}
