@@ -53,10 +53,10 @@ func (light AreaLight) GetIntensity() Color {
 	return light.Intensity
 }
 
-func (light AreaLight) PointOnLight(u, v int, random bool) Tuple {
+func (light AreaLight) PointOnLight(u, v int, jitter bool) Tuple {
 	var offset Tuple
 
-	if random {
+	if jitter {
 		offset = AddTuples(
 			TupleScalarMultiply(light.UVec, float64(u)+0.5*rand.Float64()),
 			TupleScalarMultiply(light.VVec, float64(v)+0.5*rand.Float64()),
