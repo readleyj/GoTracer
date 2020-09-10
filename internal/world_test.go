@@ -33,7 +33,7 @@ func TestDefaultWorld(t *testing.T) {
 	s2.SetTransform(Scale(0.5, 0.5, 0.5))
 
 	w := NewDefaultWorld()
-	assert.True(t, PointLightEquals(light, w.Lights[0]))
+	assert.True(t, PointLightEquals(light, w.Lights[0].(PointLight)))
 	assert.True(t, w.ContainsObject(s1))
 	assert.True(t, w.ContainsObject(s2))
 }

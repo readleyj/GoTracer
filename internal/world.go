@@ -1,7 +1,7 @@
 package internal
 
 type World struct {
-	Lights  []PointLight
+	Lights  []LightSource
 	Objects []Shape
 }
 
@@ -10,7 +10,7 @@ func NewWorld() World {
 }
 
 func NewDefaultWorld() World {
-	var lights []PointLight
+	var lights []LightSource
 	light := NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1))
 	lights = append(lights, light)
 
