@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"image"
 	"math"
 	"strconv"
 	"strings"
@@ -83,7 +84,7 @@ func (c *Canvas) ToPPM() string {
 
 func formatPPM(colorValue float64, b *strings.Builder, writtenLen *int) {
 	clamped := clamp(colorValue)
-	clampedStr := strconv.Itoa(clamped)
+	clampedStr := strconv.Itoa(int(clamped))
 
 	if *writtenLen+len(clampedStr)+2 > 70 {
 		b.WriteString("\n")
@@ -103,10 +104,19 @@ func formatPPM(colorValue float64, b *strings.Builder, writtenLen *int) {
 	}
 }
 
-func clamp(pixel float64) int {
+func (c *Canvas) ToPNG(image *image.RGBA) {
+	for i := 0; i < len(c.Pixels); i++ {
+		image.Pix[i*4] = clamp(c.Pixels[i].R)
+		image.Pix[i*4+1] = clamp(c.Pixels[i].G)
+		image.Pix[i*4+2] = clamp(c.Pixels[i].B)
+		image.Pix[i*4+3] = 255
+	}
+}
+
+func clamp(pixel float64) uint8 {
 	scaled := math.Ceil(pixel * 255.0)
 	scaled = math.Max(0.0, scaled)
 	scaled = math.Min(255.0, scaled)
 
-	return int(scaled)
+	return uint8(scaled)
 }
