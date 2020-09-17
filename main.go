@@ -418,11 +418,11 @@ func renderReflectionRefraction() {
 	westWall := internal.NewPlane()
 	westWall.SetTransform(
 		internal.MatrixMultiply(
-			internal.Translate(-5, 0, 0),
 			internal.MatrixMultiply(
+				internal.Translate(-5, 0, 0),
 				internal.RotateZ(1.5708),
-				internal.RotateY(1.5708),
 			),
+			internal.RotateY(1.5708),
 		),
 	)
 	westWall.SetMaterial(wallMaterial)
@@ -431,10 +431,10 @@ func renderReflectionRefraction() {
 	eastWall.SetTransform(
 		internal.MatrixMultiply(
 			internal.MatrixMultiply(
-				internal.RotateY(1.5708),
+				internal.Translate(5, 0, 0),
 				internal.RotateZ(1.5708),
 			),
-			internal.Translate(5, 0, 0),
+			internal.RotateY(1.5708),
 		),
 	)
 	eastWall.SetMaterial(wallMaterial)
@@ -551,14 +551,13 @@ func renderReflectionRefraction() {
 	ball7Material.RefractiveIndex = 1.5
 	ball7.SetMaterial(ball7Material)
 
-	// Walls rendered incorrectly for some reason
 	objects := []internal.Shape{
 		floor,
 		ceiling,
-		// northWall,
-		// southWall,
-		// eastWall,
-		// westWall,
+		northWall,
+		southWall,
+		eastWall,
+		westWall,
 		ball1,
 		ball2,
 		ball3,
