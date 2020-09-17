@@ -158,7 +158,7 @@ func renderScene() {
 
 	world.Lights = append(world.Lights, internal.NewPointLight(internal.NewPoint(-10, 10, -10), internal.NewColor(1, 1, 1)))
 
-	camera := internal.NewCamera(1000, 500, math.Pi/3)
+	camera := internal.NewCamera(1920, 1080, math.Pi/3)
 	camera.Transform = internal.ViewTransform(
 		internal.NewPoint(0, 1.5, -5),
 		internal.NewPoint(0, 1, 0),
@@ -172,7 +172,7 @@ func renderScene() {
 func renderRefraction() {
 	world := internal.NewWorld()
 
-	camera := internal.NewCamera(1000, 1000, 0.5)
+	camera := internal.NewCamera(1920, 1080, 0.5)
 	camera.Transform = internal.ViewTransform(internal.NewPoint(-4.5, 0.85, -4), internal.NewPoint(0, 0.85, 0), internal.NewVector(0, 1, 0))
 
 	wallMaterial := internal.NewDefaultMaterial()
@@ -366,12 +366,220 @@ func renderShadowGlamour() {
 	writeToPng(canvas, "shadow_glamour.png")
 }
 
+func renderReflectionRefraction() {
+	world := internal.NewWorld()
+
+	camera := internal.NewCamera(1920, 1080, 1.152)
+	camera.Transform = internal.ViewTransform(
+		internal.NewPoint(-2.6, 1.5, -3.9),
+		internal.NewPoint(-0.6, 1, -0.8),
+		internal.NewPoint(0, 1, 0),
+	)
+
+	light := internal.NewPointLight(internal.NewPoint(-4.9, 4.9, -1), internal.NewColor(1, 1, 1))
+
+	wallMaterial := internal.NewDefaultMaterial()
+	wallPattern := internal.NewStripePattern(
+		internal.NewColor(0.45, 0.45, 0.45),
+		internal.NewColor(0.55, 0.55, 0.55),
+	)
+	wallPattern.SetTransform(
+		internal.MatrixMultiply(
+			internal.RotateY(1.5708),
+			internal.Scale(0.25, 0.25, 0.25),
+		),
+	)
+	wallMaterial.Ambient = 0.0
+	wallMaterial.Diffuse = 0.4
+	wallMaterial.Specular = 0.0
+	wallMaterial.Reflective = 0.3
+	wallMaterial.SetPattern(wallPattern)
+
+	floor := internal.NewPlane()
+	floor.SetTransform(internal.RotateY(0.31415))
+	floorMaterial := internal.NewDefaultMaterial()
+	floorPattern := internal.NewCheckersPattern(
+		internal.NewColor(0.35, 0.35, 0.35),
+		internal.NewColor(0.65, 0.65, 0.65),
+	)
+	floorMaterial.SetPattern(floorPattern)
+	floorMaterial.Specular = 0.0
+	floorMaterial.Reflective = 0.4
+	floor.SetMaterial(floorMaterial)
+
+	ceiling := internal.NewPlane()
+	ceiling.SetTransform(internal.Translate(0, 5, 0))
+	ceilingMaterial := internal.NewDefaultMaterial()
+	ceilingMaterial.Ambient = 0.3
+	ceilingMaterial.Specular = 0.0
+	ceilingMaterial.SetColor(internal.NewColor(0.8, 0.8, 0.8))
+	ceiling.SetMaterial(ceilingMaterial)
+
+	westWall := internal.NewPlane()
+	westWall.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(-5, 0, 0),
+			internal.MatrixMultiply(
+				internal.RotateZ(1.5708),
+				internal.RotateY(1.5708),
+			),
+		),
+	)
+	westWall.SetMaterial(wallMaterial)
+
+	eastWall := internal.NewPlane()
+	eastWall.SetTransform(
+		internal.MatrixMultiply(
+			internal.MatrixMultiply(
+				internal.RotateY(1.5708),
+				internal.RotateZ(1.5708),
+			),
+			internal.Translate(5, 0, 0),
+		),
+	)
+	eastWall.SetMaterial(wallMaterial)
+
+	northWall := internal.NewPlane()
+	northWall.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(0, 0, 5),
+			internal.RotateX(1.5708),
+		),
+	)
+	northWall.SetMaterial(wallMaterial)
+
+	southWall := internal.NewPlane()
+	southWall.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(0, 0, -5),
+			internal.RotateX(1.5708),
+		),
+	)
+	southWall.SetMaterial(wallMaterial)
+
+	ball1 := internal.NewSphere()
+	ball1.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(4.6, 0.4, 1),
+			internal.Scale(0.4, 0.4, 0.4),
+		),
+	)
+	ball1Material := internal.NewDefaultMaterial()
+	ball1Material.SetColor(internal.NewColor(0.8, 0.5, 0.3))
+	ball1Material.Shininess = 50
+	ball1.SetMaterial(ball1Material)
+
+	ball2 := internal.NewSphere()
+	ball2.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(4.7, 0.3, 0.4),
+			internal.Scale(0.3, 0.3, 0.3),
+		),
+	)
+	ball2Material := internal.NewDefaultMaterial()
+	ball2Material.SetColor(internal.NewColor(0.9, 0.4, 0.5))
+	ball2Material.Shininess = 50
+	ball2.SetMaterial(ball2Material)
+
+	ball3 := internal.NewSphere()
+	ball3.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(-1, 0.5, 4.5),
+			internal.Scale(0.5, 0.5, 0.5),
+		),
+	)
+	ball3Material := internal.NewDefaultMaterial()
+	ball3Material.SetColor(internal.NewColor(0.4, 0.9, 0.6))
+	ball3Material.Shininess = 50
+	ball3.SetMaterial(ball3Material)
+
+	ball4 := internal.NewSphere()
+	ball4.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(-1.7, 0.3, 4.7),
+			internal.Scale(0.3, 0.3, 0.3),
+		),
+	)
+	ball4Material := internal.NewDefaultMaterial()
+	ball4Material.SetColor(internal.NewColor(0.4, 0.6, 0.9))
+	ball4Material.Shininess = 50
+	ball4.SetMaterial(ball4Material)
+
+	ball5 := internal.NewSphere()
+	ball5.SetTransform(
+		internal.Translate(-0.6, 1, 0.6),
+	)
+	ball5Material := internal.NewDefaultMaterial()
+	ball5Material.SetColor(internal.NewColor(1, 0.3, 0.2))
+	ball5Material.Specular = 0.4
+	ball5Material.Shininess = 5
+	ball5.SetMaterial(ball5Material)
+
+	ball6 := internal.NewSphere()
+	ball6.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(0.6, 0.7, -0.6),
+			internal.Scale(0.7, 0.7, 0.7),
+		),
+	)
+	ball6Material := internal.NewDefaultMaterial()
+	ball6Material.SetColor(internal.NewColor(0, 0, 0.2))
+	ball6Material.Ambient = 0.0
+	ball6Material.Diffuse = 0.4
+	ball6Material.Specular = 0.9
+	ball6Material.Shininess = 300
+	ball6Material.Reflective = 0.9
+	ball6Material.Transparency = 0.9
+	ball6Material.RefractiveIndex = 1.5
+	ball6.SetMaterial(ball6Material)
+
+	ball7 := internal.NewSphere()
+	ball7.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(-0.7, 0.5, -0.8),
+			internal.Scale(0.5, 0.5, 0.5),
+		),
+	)
+	ball7Material := internal.Material{}
+	ball7Material.SetColor(internal.NewColor(0, 0.2, 0))
+	ball7Material.Ambient = 0.0
+	ball7Material.Diffuse = 0.4
+	ball7Material.Specular = 0.9
+	ball7Material.Shininess = 300
+	ball7Material.Reflective = 0.9
+	ball7Material.Transparency = 0.9
+	ball7Material.RefractiveIndex = 1.5
+	ball7.SetMaterial(ball7Material)
+
+	// Walls rendered incorrectly for some reason
+	objects := []internal.Shape{
+		floor,
+		ceiling,
+		// northWall,
+		// southWall,
+		// eastWall,
+		// westWall,
+		ball1,
+		ball2,
+		ball3,
+		ball4,
+		ball5,
+		ball6,
+		ball7,
+	}
+	world.Lights = append(world.Lights, light)
+	world.Objects = append(world.Objects, objects...)
+
+	canvas := internal.Render(camera, world)
+	writeToPng(canvas, "reflection_refraction.png")
+}
+
 func main() {
 	// renderCircle()
 	// renderSphere()
 	// renderScene()
 	// renderRefraction()
-	renderShadowGlamour()
+	renderReflectionRefraction()
 }
 
 // Adapted from https://github.com/eriklupander/rt/blob/master/main.go
