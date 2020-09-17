@@ -17,6 +17,7 @@ type SmoothTriangle struct {
 	N1, N2, N3       Tuple
 	E1, E2           Tuple
 	Normal           Tuple
+	HasShadow        bool
 }
 
 func init() {
@@ -42,6 +43,7 @@ func NewSmoothTriangle(p1, p2, p3, n1, n2, n3 Tuple) *SmoothTriangle {
 		E1:               e1,
 		E2:               e2,
 		Normal:           Normalize(Cross(e2, e1)),
+		HasShadow:        true,
 	}
 }
 
@@ -119,4 +121,8 @@ func (tri *SmoothTriangle) GetParent() Shape {
 
 func (tri *SmoothTriangle) SetParent(s Shape) {
 	tri.Parent = s
+}
+
+func (tri *SmoothTriangle) CastsShadow() bool {
+	return tri.HasShadow
 }

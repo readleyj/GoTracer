@@ -13,6 +13,7 @@ type Plane struct {
 	Inverse          Matrix
 	InverseTranspose Matrix
 	Parent           Shape
+	HasShadow        bool
 }
 
 func init() {
@@ -27,6 +28,7 @@ func NewPlane() *Plane {
 		Inverse:          NewIdentity4(),
 		InverseTranspose: NewIdentity4(),
 		Parent:           nil,
+		HasShadow:        true,
 	}
 }
 
@@ -79,4 +81,8 @@ func (p *Plane) GetParent() Shape {
 
 func (p *Plane) SetParent(s Shape) {
 	p.Parent = s
+}
+
+func (p *Plane) CastsShadow() bool {
+	return p.HasShadow
 }

@@ -16,6 +16,7 @@ type Triangle struct {
 	P1, P2, P3       Tuple
 	E1, E2           Tuple
 	Normal           Tuple
+	HasShadow        bool
 }
 
 func init() {
@@ -38,6 +39,7 @@ func NewTriangle(p1, p2, p3 Tuple) *Triangle {
 		E1:               e1,
 		E2:               e2,
 		Normal:           Normalize(Cross(e2, e1)),
+		HasShadow:        true,
 	}
 }
 
@@ -109,4 +111,8 @@ func (tri *Triangle) GetParent() Shape {
 
 func (tri *Triangle) SetParent(s Shape) {
 	tri.Parent = s
+}
+
+func (tri *Triangle) CastsShadow() bool {
+	return tri.HasShadow
 }

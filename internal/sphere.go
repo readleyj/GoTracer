@@ -13,6 +13,7 @@ type Sphere struct {
 	Inverse          Matrix
 	InverseTranspose Matrix
 	Parent           Shape
+	HasShadow        bool
 }
 
 func init() {
@@ -27,6 +28,7 @@ func NewSphere() *Sphere {
 		Inverse:          NewIdentity4(),
 		InverseTranspose: NewIdentity4(),
 		Parent:           nil,
+		HasShadow:        true,
 	}
 }
 
@@ -95,4 +97,8 @@ func (s *Sphere) GetParent() Shape {
 
 func (s *Sphere) SetParent(shape Shape) {
 	s.Parent = shape
+}
+
+func (s *Sphere) CastsShadow() bool {
+	return s.HasShadow
 }

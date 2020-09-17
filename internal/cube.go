@@ -13,6 +13,7 @@ type Cube struct {
 	Inverse          Matrix
 	InverseTranspose Matrix
 	Parent           Shape
+	HasShadow        bool
 }
 
 func init() {
@@ -27,6 +28,7 @@ func NewCube() *Cube {
 		Inverse:          NewIdentity4(),
 		InverseTranspose: NewIdentity4(),
 		Parent:           nil,
+		HasShadow:        true,
 	}
 }
 
@@ -97,4 +99,8 @@ func (c *Cube) GetParent() Shape {
 
 func (c *Cube) SetParent(s Shape) {
 	c.Parent = s
+}
+
+func (c *Cube) CastsShadow() bool {
+	return c.HasShadow
 }

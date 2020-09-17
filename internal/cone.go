@@ -16,6 +16,7 @@ type Cone struct {
 	Minimum          float64
 	Maximum          float64
 	Closed           bool
+	HasShadow        bool
 }
 
 func init() {
@@ -31,6 +32,7 @@ func NewCone() *Cone {
 		Minimum:   math.Inf(-1),
 		Maximum:   math.Inf(1),
 		Closed:    false,
+		HasShadow: true,
 	}
 }
 
@@ -148,4 +150,8 @@ func (cone *Cone) GetParent() Shape {
 
 func (cone *Cone) SetParent(s Shape) {
 	cone.Parent = s
+}
+
+func (cone *Cone) CastsShadow() bool {
+	return cone.HasShadow
 }

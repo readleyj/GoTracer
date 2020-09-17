@@ -28,6 +28,7 @@ type CSG struct {
 	Operation        CSGOperation
 	Left             Shape
 	Right            Shape
+	HasShadow        bool
 }
 
 func init() {
@@ -45,6 +46,7 @@ func NewCSG(op CSGOperation, left, right Shape) *CSG {
 		Operation:        op,
 		Left:             left,
 		Right:            right,
+		HasShadow:        true,
 	}
 
 	left.SetParent(csg)
@@ -109,6 +111,10 @@ func (csg *CSG) GetParent() Shape {
 
 func (csg *CSG) SetParent(s Shape) {
 	csg.Parent = s
+}
+
+func (csg *CSG) CastsShadow() bool {
+	return csg.HasShadow
 }
 
 func IntersectionAllowed(op CSGOperation, lhit, inl, inr bool) bool {

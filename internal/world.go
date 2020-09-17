@@ -43,6 +43,10 @@ func IntersectWorld(w World, r Ray) Intersections {
 	var intersects []Intersection
 
 	for _, obj := range w.Objects {
+		if !obj.CastsShadow() {
+			continue
+		}
+
 		i := Intersect(obj, r)
 
 		for _, innerIntersect := range i {

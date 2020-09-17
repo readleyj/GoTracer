@@ -18,6 +18,8 @@ type Shape interface {
 
 	LocalIntersect(localRay Ray) Intersections
 	LocalNormalAt(point Tuple, i Intersection) Tuple
+
+	CastsShadow() bool
 }
 
 type TestShape struct {
@@ -27,6 +29,7 @@ type TestShape struct {
 	InverseTranspose Matrix
 	Parent           Shape
 	SavedRay         Ray
+	HasShadow        bool
 }
 
 func NewTestShape() *TestShape {
@@ -37,6 +40,7 @@ func NewTestShape() *TestShape {
 		InverseTranspose: NewIdentity4(),
 		Parent:           nil,
 		SavedRay:         Ray{},
+		HasShadow:        true,
 	}
 }
 
@@ -85,6 +89,10 @@ func (t *TestShape) GetParent() Shape {
 
 func (t *TestShape) SetParent(s Shape) {
 	t.Parent = s
+}
+
+func (t *TestShape) CastsShadow() bool {
+	return t.HasShadow
 }
 
 func Intersect(s Shape, ray Ray) Intersections {

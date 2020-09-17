@@ -14,6 +14,7 @@ type Group struct {
 	InverseTranspose Matrix
 	Parent           Shape
 	Children         []Shape
+	HasShadow        bool
 }
 
 func init() {
@@ -29,6 +30,7 @@ func NewGroup() *Group {
 		InverseTranspose: NewIdentity4(),
 		Parent:           nil,
 		Children:         []Shape{},
+		HasShadow:        true,
 	}
 }
 
@@ -91,6 +93,10 @@ func (group *Group) GetParent() Shape {
 
 func (group *Group) SetParent(s Shape) {
 	group.Parent = s
+}
+
+func (group *Group) CastsShadow() bool {
+	return group.HasShadow
 }
 
 func (group *Group) AddChild(s Shape) {

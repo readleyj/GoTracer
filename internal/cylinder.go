@@ -16,6 +16,7 @@ type Cylinder struct {
 	Minimum          float64
 	Maximum          float64
 	Closed           bool
+	HasShadow        bool
 }
 
 func init() {
@@ -33,6 +34,7 @@ func NewCylinder() *Cylinder {
 		Minimum:          math.Inf(-1),
 		Maximum:          math.Inf(1),
 		Closed:           false,
+		HasShadow:        true,
 	}
 }
 
@@ -135,4 +137,8 @@ func (cyl *Cylinder) GetParent() Shape {
 
 func (cyl *Cylinder) SetParent(s Shape) {
 	cyl.Parent = s
+}
+
+func (cyl *Cylinder) CastsShadow() bool {
+	return cyl.HasShadow
 }
