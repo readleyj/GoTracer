@@ -7,6 +7,9 @@ _Reflection/Refraction_
 ![image](renders/cylinders.png)
 _Cylinders_
 
+![image](renders/table.png)
+_Table_
+
 ![image](renders/refraction.png)
 _Refraction_
 
