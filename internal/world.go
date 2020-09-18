@@ -43,10 +43,6 @@ func IntersectWorld(w World, r Ray) Intersections {
 	var intersects []Intersection
 
 	for _, obj := range w.Objects {
-		if !obj.CastsShadow() {
-			continue
-		}
-
 		i := Intersect(obj, r)
 
 		for _, innerIntersect := range i {
@@ -67,7 +63,7 @@ func IsShadowed(world World, lightPos, point Tuple) bool {
 	h := Hit(intersections)
 	empty := Intersection{}
 
-	return h != empty && h.T < distance
+	return h != empty && h.T < distance && h.Object.CastsShadow()
 }
 
 func (w World) ContainsObject(s Shape) bool {
