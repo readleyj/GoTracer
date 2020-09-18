@@ -871,13 +871,260 @@ func renderTable() {
 	writeToPng(canvas, "table.png")
 }
 
+func renderCylinders() {
+	world := internal.NewWorld()
+
+	camera := internal.NewCamera(1920, 1080, 0.314)
+	camera.Transform = internal.ViewTransform(internal.NewPoint(8, 3.5, -9), internal.NewPoint(0, 0.3, 0), internal.NewPoint(0, 1, 0))
+
+	light := internal.NewPointLight(internal.NewPoint(1, 6.9, -4.9), internal.NewColor(1, 1, 1))
+
+	floor := internal.NewPlane()
+	floorMaterial := internal.NewDefaultMaterial()
+	floorPattern := internal.NewCheckersPattern(
+		internal.NewColor(0.5, 0.5, 0.5),
+		internal.NewColor(0.75, 0.75, 0.75),
+	)
+	floorPattern.SetTransform(
+		internal.MatrixMultiply(
+			internal.RotateY(0.3),
+			internal.Scale(0.25, 0.25, 0.25),
+		),
+	)
+	floorMaterial.SetPattern(floorPattern)
+	floorMaterial.Ambient = 0.2
+	floorMaterial.Diffuse = 0.9
+	floorMaterial.Specular = 0.0
+	floor.SetMaterial(floorMaterial)
+
+	cylinder1 := internal.NewCylinder()
+	cylinder1.Minimum = 0
+	cylinder1.Maximum = 0.75
+	cylinder1.Closed = true
+	cylinder1.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(-1, 0, 1),
+			internal.Scale(0.5, 1, 0.5),
+		),
+	)
+	cylinder1Material := internal.NewDefaultMaterial()
+	cylinder1Material.SetColor(internal.NewColor(0, 0, 0.6))
+	cylinder1Material.Diffuse = 0.1
+	cylinder1Material.Specular = 0.9
+	cylinder1Material.Shininess = 300
+	cylinder1Material.Reflective = 0.9
+	cylinder1.SetMaterial(cylinder1Material)
+
+	cylinder2 := internal.NewCylinder()
+	cylinder2.Minimum = 0
+	cylinder2.Maximum = 0.2
+	cylinder2.Closed = false
+	cylinder2.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(1, 0, 0),
+			internal.Scale(0.8, 1, 0.8),
+		),
+	)
+	cylinder2Material := internal.NewDefaultMaterial()
+	cylinder2Material.SetColor(internal.NewColor(1, 1, 0.3))
+	cylinder2Material.Ambient = 0.1
+	cylinder2Material.Diffuse = 0.8
+	cylinder2Material.Specular = 0.9
+	cylinder2Material.Shininess = 300
+	cylinder2.SetMaterial(cylinder2Material)
+
+	cylinder3 := internal.NewCylinder()
+	cylinder3.Minimum = 0
+	cylinder3.Maximum = 0.3
+	cylinder3.Closed = false
+	cylinder3.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(1, 0, 0),
+			internal.Scale(0.6, 1, 0.6),
+		),
+	)
+	cylinder3Material := internal.NewDefaultMaterial()
+	cylinder3Material.SetColor(internal.NewColor(1, 0.9, 0.4))
+	cylinder3Material.Ambient = 0.1
+	cylinder3Material.Diffuse = 0.8
+	cylinder3Material.Specular = 0.9
+	cylinder3Material.Shininess = 300
+	cylinder3.SetMaterial(cylinder3Material)
+
+	cylinder4 := internal.NewCylinder()
+	cylinder4.Minimum = 0
+	cylinder4.Maximum = 0.4
+	cylinder4.Closed = false
+	cylinder4.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(1, 0, 0),
+			internal.Scale(0.4, 1, 0.4),
+		),
+	)
+	cylinder4Material := internal.NewDefaultMaterial()
+	cylinder4Material.SetColor(internal.NewColor(1, 0.8, 0.5))
+	cylinder4Material.Ambient = 0.1
+	cylinder4Material.Diffuse = 0.8
+	cylinder4Material.Specular = 0.9
+	cylinder4Material.Shininess = 300
+	cylinder4.SetMaterial(cylinder4Material)
+
+	cylinder5 := internal.NewCylinder()
+	cylinder5.Minimum = 0
+	cylinder5.Maximum = 0.5
+	cylinder5.Closed = true
+	cylinder5.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(1, 0, 0),
+			internal.Scale(0.2, 1, 0.2),
+		),
+	)
+	cylinder5Material := internal.NewDefaultMaterial()
+	cylinder5Material.SetColor(internal.NewColor(1, 0.7, 0.6))
+	cylinder5Material.Ambient = 0.1
+	cylinder5Material.Diffuse = 0.8
+	cylinder5Material.Specular = 0.9
+	cylinder5Material.Shininess = 300
+	cylinder5.SetMaterial(cylinder5Material)
+
+	cylinder6 := internal.NewCylinder()
+	cylinder6.Minimum = 0
+	cylinder6.Maximum = 0.3
+	cylinder6.Closed = true
+	cylinder6.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(0, 0, -0.75),
+			internal.Scale(0.05, 1, 0.05),
+		),
+	)
+	cylinder6Material := internal.NewDefaultMaterial()
+	cylinder6Material.SetColor(internal.NewColor(1, 0, 0))
+	cylinder6Material.Ambient = 0.1
+	cylinder6Material.Diffuse = 0.9
+	cylinder6Material.Specular = 0.9
+	cylinder6Material.Shininess = 300
+	cylinder6.SetMaterial(cylinder6Material)
+
+	cylinder7 := internal.NewCylinder()
+	cylinder7.Minimum = 0
+	cylinder7.Maximum = 0.3
+	cylinder7.Closed = true
+	cylinder7.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(0, 0, -2.25),
+			internal.MatrixMultiply(
+				internal.RotateY(-0.15),
+				internal.MatrixMultiply(
+					internal.Translate(0, 0, 1.5),
+					internal.Scale(0.05, 1, 0.05),
+				),
+			),
+		),
+	)
+	cylinder7Material := internal.NewDefaultMaterial()
+	cylinder7Material.SetColor(internal.NewColor(1, 1, 0))
+	cylinder7Material.Ambient = 0.1
+	cylinder7Material.Diffuse = 0.9
+	cylinder7Material.Specular = 0.9
+	cylinder7Material.Shininess = 300
+	cylinder7.SetMaterial(cylinder7Material)
+
+	cylinder8 := internal.NewCylinder()
+	cylinder8.Minimum = 0
+	cylinder8.Maximum = 0.3
+	cylinder8.Closed = true
+	cylinder8.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(0, 0, -2.25),
+			internal.MatrixMultiply(
+				internal.RotateY(-0.3),
+				internal.MatrixMultiply(
+					internal.Translate(0, 0, 1.5),
+					internal.Scale(0.05, 1, 0.05),
+				),
+			),
+		),
+	)
+	cylinder8Material := internal.NewDefaultMaterial()
+	cylinder8Material.SetColor(internal.NewColor(0, 1, 0))
+	cylinder8Material.Ambient = 0.1
+	cylinder8Material.Diffuse = 0.9
+	cylinder8Material.Specular = 0.9
+	cylinder8Material.Shininess = 300
+	cylinder8.SetMaterial(cylinder8Material)
+
+	cylinder9 := internal.NewCylinder()
+	cylinder9.Minimum = 0
+	cylinder9.Maximum = 0.3
+	cylinder9.Closed = true
+	cylinder9.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(0, 0, -2.25),
+			internal.MatrixMultiply(
+				internal.RotateY(-0.45),
+				internal.MatrixMultiply(
+					internal.Translate(0, 0, 1.5),
+					internal.Scale(0.05, 1, 0.05),
+				),
+			),
+		),
+	)
+	cylinder9Material := internal.NewDefaultMaterial()
+	cylinder9Material.SetColor(internal.NewColor(0, 1, 1))
+	cylinder9Material.Ambient = 0.1
+	cylinder9Material.Diffuse = 0.9
+	cylinder9Material.Specular = 0.9
+	cylinder9Material.Shininess = 300
+	cylinder9.SetMaterial(cylinder9Material)
+
+	glassCylinder := internal.NewCylinder()
+	glassCylinder.Minimum = 0.0001
+	glassCylinder.Maximum = 0.5
+	glassCylinder.Closed = true
+	glassCylinder.SetTransform(
+		internal.MatrixMultiply(
+			internal.Translate(0, 0, -1.5),
+			internal.Scale(0.33, 1, 0.33),
+		),
+	)
+	glassCylinderMaterial := internal.NewDefaultMaterial()
+	glassCylinderMaterial.SetColor(internal.NewColor(0.25, 0, 0))
+	glassCylinderMaterial.Diffuse = 0.1
+	glassCylinderMaterial.Specular = 0.9
+	glassCylinderMaterial.Shininess = 300
+	glassCylinderMaterial.Reflective = 0.9
+	glassCylinderMaterial.Transparency = 0.9
+	glassCylinderMaterial.RefractiveIndex = 1.5
+	glassCylinder.SetMaterial(glassCylinderMaterial)
+
+	objects := []internal.Shape{
+		floor,
+		cylinder1,
+		cylinder2,
+		cylinder3,
+		cylinder4,
+		cylinder5,
+		cylinder6,
+		cylinder7,
+		cylinder8,
+		cylinder9,
+		glassCylinder,
+	}
+	world.Lights = append(world.Lights, light)
+	world.Objects = append(world.Objects, objects...)
+
+	canvas := internal.Render(camera, world)
+	writeToPng(canvas, "cylinders.png")
+}
+
 func main() {
 	// renderCircle()
 	// renderSphere()
 	// renderScene()
 	// renderRefraction()
 	// renderReflectionRefraction()
-	renderTable()
+	// renderTable()
+	renderCylinders()
 }
 
 // Adapted from https://github.com/eriklupander/rt/blob/master/main.go
