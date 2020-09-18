@@ -305,6 +305,7 @@ func renderShadowGlamour() {
 		10,
 		internal.NewColor(1.5, 1.5, 1.5),
 	)
+	light.Jitter = true
 
 	cube := internal.NewCube()
 	cube.HasShadow = false
