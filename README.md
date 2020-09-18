@@ -4,6 +4,9 @@ A ray tracer written in Go following the [The Ray Tracer challenge](https://prag
 ![image](renders/reflection_refraction.png)
 _Reflection/Refraction_
 
+![image](renders/shadow_glamour.png)
+_Soft Shadows_
+
 ![image](renders/cylinders.png)
 _Cylinders_
 

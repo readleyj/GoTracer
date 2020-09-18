@@ -294,7 +294,7 @@ func renderRefraction() {
 func renderShadowGlamour() {
 	world := internal.NewWorld()
 
-	camera := internal.NewCamera(400, 160, 0.7854)
+	camera := internal.NewCamera(1920, 1080, 0.7854)
 	camera.Transform = internal.ViewTransform(internal.NewPoint(-3, 1, 2.5), internal.NewPoint(0, 0.5, 0), internal.NewVector(0, 1, 0))
 
 	light := internal.NewAreaLight(
@@ -307,7 +307,8 @@ func renderShadowGlamour() {
 	)
 
 	cube := internal.NewCube()
-	cubeMaterial := internal.Material{}
+	cube.HasShadow = false
+	cubeMaterial := internal.NewDefaultMaterial()
 	cubeMaterial.SetColor(internal.NewColor(1.5, 1.5, 1.5))
 	cubeMaterial.Ambient = 1.0
 	cubeMaterial.Diffuse = 0.0
@@ -315,13 +316,13 @@ func renderShadowGlamour() {
 	cube.SetMaterial(cubeMaterial)
 	cube.SetTransform(
 		internal.MatrixMultiply(
-			internal.Scale(1, 1, 0.01),
 			internal.Translate(0, 3, 4),
+			internal.Scale(1, 1, 0.01),
 		),
 	)
 
 	plane := internal.NewPlane()
-	planeMaterial := internal.Material{}
+	planeMaterial := internal.NewDefaultMaterial()
 	planeMaterial.SetColor(internal.NewColor(1, 1, 1))
 	planeMaterial.Ambient = 0.025
 	planeMaterial.Diffuse = 0.67
@@ -329,17 +330,17 @@ func renderShadowGlamour() {
 	plane.SetMaterial(planeMaterial)
 
 	sphere1 := internal.NewSphere()
-	sphereMaterial1 := internal.Material{}
+	sphereMaterial1 := internal.NewDefaultMaterial()
 	sphereMaterial1.SetColor(internal.NewColor(1, 0, 0))
 	sphereMaterial1.Ambient = 0.1
 	sphereMaterial1.Diffuse = 0.6
 	sphereMaterial1.Reflective = 0.3
 	sphereMaterial1.Specular = 0.0
-	sphere1.SetMaterial(cubeMaterial)
+	sphere1.SetMaterial(sphereMaterial1)
 	sphere1.SetTransform(
 		internal.MatrixMultiply(
-			internal.Scale(0.5, 0.5, 0.5),
 			internal.Translate(0.5, 0.5, 0),
+			internal.Scale(0.5, 0.5, 0.5),
 		),
 	)
 
@@ -350,11 +351,11 @@ func renderShadowGlamour() {
 	sphereMaterial2.Diffuse = 0.6
 	sphereMaterial2.Reflective = 0.3
 	sphereMaterial2.Specular = 0.0
-	sphere2.SetMaterial(cubeMaterial)
+	sphere2.SetMaterial(sphereMaterial2)
 	sphere2.SetTransform(
 		internal.MatrixMultiply(
-			internal.Scale(0.33, 0.33, 0.33),
 			internal.Translate(-0.25, 0.33, 0),
+			internal.Scale(0.33, 0.33, 0.33),
 		),
 	)
 
@@ -685,7 +686,6 @@ func renderTable() {
 	)
 
 	glassCube := internal.NewCube()
-	// Setting to false makes the cube disappear for some reason
 	glassCube.HasShadow = false
 	glassCube.SetTransform(
 		internal.MatrixMultiply(
@@ -1118,12 +1118,13 @@ func renderCylinders() {
 
 func main() {
 	// renderCircle()
-	renderSphere()
+	// renderSphere()
 	// renderScene()
 	// renderRefraction()
 	// renderReflectionRefraction()
 	// renderTable()
 	// renderCylinders()
+	renderShadowGlamour()
 }
 
 // Adapted from https://github.com/eriklupander/rt/blob/master/main.go
