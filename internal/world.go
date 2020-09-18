@@ -63,7 +63,7 @@ func IsShadowed(world World, lightPos, point Tuple) bool {
 	h := Hit(intersections)
 	empty := Intersection{}
 
-	return h != empty && h.T < distance && h.Object.CastsShadow()
+	return h != empty && h.Object.CastsShadow() && h.T < distance
 }
 
 func (w World) ContainsObject(s Shape) bool {
