@@ -29,5 +29,6 @@ _Sphere_
 - Support for multiple lights
 - Bounding Volume Hierarchy(BVH) / Bounding Box
 - Phong Shading, Shadows, Reflection, Refraction
+- Soft Shadows
 - Groups
 - .obj file parsing and triangulation
