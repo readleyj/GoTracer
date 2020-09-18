@@ -43,6 +43,7 @@ type AreaLight struct {
 	VVec      Tuple
 	VSteps    int
 	Samples   int
+	Jitter    bool
 }
 
 func (light AreaLight) GetPosition() Tuple {
@@ -88,6 +89,7 @@ func NewAreaLight(corner Tuple, uvec Tuple, usteps int, vvec Tuple, vsteps int, 
 		VVec:      TupleScalarDivide(vvec, float64(vsteps)),
 		VSteps:    vsteps,
 		Samples:   usteps * vsteps,
+		Jitter:    false,
 	}
 }
 
@@ -111,7 +113,7 @@ func Lighting(m Material, object Shape, light LightSource, point, eyeV, normalV 
 
 		for u := 0; u < l.USteps; u++ {
 			for v := 0; v < l.VSteps; v++ {
-				lightV := Normalize(SubTuples(l.PointOnLight(u, v, false), point))
+				lightV := Normalize(SubTuples(l.PointOnLight(u, v, l.Jitter), point))
 				lightDotNormal := Dot(lightV, normalV)
 
 				if lightDotNormal < 0 {
@@ -185,7 +187,7 @@ func IntensityAt(light LightSource, point Tuple, w World) float64 {
 
 		for v := 0; v < light.VSteps; v++ {
 			for u := 0; u < light.USteps; u++ {
-				lightPos := light.PointOnLight(u, v, false)
+				lightPos := light.PointOnLight(u, v, light.Jitter)
 
 				if !IsShadowed(w, lightPos, point) {
 					total += 1.0
