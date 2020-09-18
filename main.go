@@ -4,7 +4,6 @@ import (
 	"gotracer/internal"
 	"image"
 	"image/png"
-	"io/ioutil"
 	"math"
 	"os"
 )
@@ -47,7 +46,7 @@ func renderSphere() {
 	wallZ := 10.0
 
 	wallSize := 7.0
-	canvasPixels := 500
+	canvasPixels := 1024
 	pixelSize := wallSize / float64(canvasPixels)
 	half := wallSize / 2
 
@@ -81,7 +80,7 @@ func renderSphere() {
 		}
 	}
 
-	ioutil.WriteFile("sphere.ppm", []byte(canvas.ToPPM()), 0)
+	writeToPng(canvas, "sphere.png")
 }
 
 func renderScene() {
@@ -1119,12 +1118,12 @@ func renderCylinders() {
 
 func main() {
 	// renderCircle()
-	// renderSphere()
+	renderSphere()
 	// renderScene()
 	// renderRefraction()
 	// renderReflectionRefraction()
 	// renderTable()
-	renderCylinders()
+	// renderCylinders()
 }
 
 // Adapted from https://github.com/eriklupander/rt/blob/master/main.go
