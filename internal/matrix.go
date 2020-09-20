@@ -12,8 +12,9 @@ var Identity4 = NewMatrix4([]float64{
 })
 
 type Matrix struct {
-	rows, cols int
-	elems      []float64
+	rows  int
+	cols  int
+	elems []float64
 }
 
 func NewMatrix(elems []float64, numRows, numCols int) Matrix {

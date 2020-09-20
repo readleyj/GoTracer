@@ -3,7 +3,9 @@ package internal
 import "github.com/google/go-cmp/cmp"
 
 type Color struct {
-	R, G, B float64
+	R float64
+	G float64
+	B float64
 }
 
 func NewColor(r, g, b float64) Color {
